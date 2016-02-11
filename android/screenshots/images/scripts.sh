@@ -1,0 +1,17 @@
+mv Screenshot_2016-02-11-12-53-36.png	screenshot-17
+mv Screenshot_2016-02-11-12-53-04.png	screenshot-16
+mv Screenshot_2016-02-11-12-52-10.png	screenshot-15
+mv Screenshot_2016-02-11-12-50-14.png	screenshot-14
+mv Screenshot_2016-02-11-12-50-01.png	screenshot-13
+mv Screenshot_2016-02-11-12-49-16.png	screenshot-12
+mv Screenshot_2016-02-11-12-49-04.png	screenshot-11
+mv Screenshot_2016-02-11-12-48-11.png	screenshot-10
+mv Screenshot_2016-02-11-12-47-47.png	screenshot-9
+mv Screenshot_2016-02-11-12-45-54.png	screenshot-8
+mv Screenshot_2016-02-11-12-43-39.png	screenshot-7
+mv Screenshot_2016-02-11-12-43-30.png	screenshot-6
+mv Screenshot_2016-02-11-12-43-06.png	screenshot-5
+mv Screenshot_2016-02-11-12-43-00.png	screenshot-4
+mv Screenshot_2016-02-11-12-42-22.png	screenshot-3
+mv Screenshot_2016-02-11-12-42-14.png	screenshot-2
+mv Screenshot_2016-02-11-12-34-43.png	screenshot-1
