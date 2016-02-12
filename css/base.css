@@ -1,1 +1,5 @@
-BODY {background-color:#85A645}
+body {
+    	background-repeat: no-repeat;
+    	background-image: url(/images/backgrounds/green_forest_background.jpg);
+	background-size: cover;
+}
