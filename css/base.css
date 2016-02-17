@@ -1,0 +1,12 @@
+/*
+ * General style definitions.
+ */
+
+/* Flex container for centering. */
+div.center {
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+
