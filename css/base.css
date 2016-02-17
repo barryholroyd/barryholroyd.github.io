@@ -33,7 +33,9 @@ div.center {
  *   
  */
 div.border {
-  border: 5px solid gray;
+  border: 3px solid gray;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 div.margin_large {
   width:;

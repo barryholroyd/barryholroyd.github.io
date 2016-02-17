@@ -1,62 +1,70 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="/css/background_solid.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
   </head>
   <body>
     <center>
       <h1 id="ListScreen">List Screen</h1>
     </center>
-    The List screen helps you identify which Darts are ahead of you
-    and which are behind you as you travel -- generally, most people
-    don't want to backtrack to go to a particular restaurant or
+    The List screen helps you identify which
+    <a href="/android/apps/evermore/terminlogy.html#Dart"><i>Darts</i></a>
+    are ahead of you and which are behind you as you travel -- generally,
+    most people don't want to backtrack to go to a particular restaurant or
     gas station.
-    <p>
+    <h2>Concepts</h2>
     There are two central concepts intrinsic to the List screen.
-    <dl>
-      <dt>Location</dt>
-      <dd>This is your current location. When your device has access to its
-          location information, the location LED in the status bar will be
-	  green. During those times when it cannot get a fix on its current
-	  location, it will be red.</dd>
-      <dt>Bearing</dt>
-      <dd>This is the direction your device (and generally you) is moving. It is <i>not</i> the direction the device is facing. When the device can get its bearing, the bearing LED will be green; otherwise, it will be red. It can sometimes be hard for a device to get its bearing -- your bearing LED may often be red when your location LED is green.
-    </dl>
+    <div class="border margin_large">
+      <dl>
+        <dt>Location</dt>
+        <dd>This is your current location. When your device has access to its
+            location information, the location LED in the status bar will be
+	    green. During those times when it cannot get a fix on its current
+	    location, it will be red.</dd>
+        <dt>Bearing</dt>
+        <dd>This is the direction your device (and generally you) is moving. It is <i>not</i> the direction the device is facing. When the device can get its bearing, the bearing LED will be green; otherwise, it will be red. It can sometimes be hard for a device to get its bearing -- your bearing LED may often be red when your location LED is green.
+      </dl>
+    </div>
     In call cases, Evermore will do its best to provide both location-based information (such as you distance from each Dart) and bearing-based information (such as the direction to each Dart).
     <p>
     Location- and bearing-dependent items will slowly fade once their respective LED turns red. This is to indicate that Evermore is giving you the best information it can, but the information is slowly aging.
-    <p>
+    <h2>List Status Bar</h2>
     At the top is the List Status Bar. It has the following items.
-    <dl>
-      <dt>Corner Arrows</dt>
-      <dd>The two corner arrows indicate your bearing.</dd>
-      <dt>Lock Button</dt>
-      <dd>The Lock button will "lock" the list such that most of the items
-          ahead of you and to the side of you appear on the screen; there
-	  will be few items behind you which appear there.</dd>
-      <dt>Center Direction</dt>
-      <dd>Your current bearing will be shown in text in the center of the
-          status bar. The two arrows to either side of it always point up.</dd>
-      <dt>Location Led</dt>
-      <dd>Indicates that your device has access to information about your
-          current location.</dd>
-      <dt>Bearing Led</dt>
-      <dd>Indicates that your device has an understanding of the direction
-          it is travelling.</dd>
-    </dl>
-    <p>
-    The List screen displays all the <i>Darts</i> in a list format.  The
+    <div class="border margin_large">
+      <dl>
+        <dt>Corner Arrows</dt>
+        <dd>The two corner arrows indicate your bearing.</dd>
+        <dt>Lock Button</dt>
+        <dd>The Lock button will "lock" the list such that most of the items
+            ahead of you and to the side of you appear on the screen; there
+	    will be few items behind you which appear there.</dd>
+        <dt>Center Direction</dt>
+        <dd>Your current bearing will be shown in text in the center of the
+            status bar. The two arrows to either side of it always point up.</dd>
+        <dt>Location Led</dt>
+        <dd>Indicates that your device has access to information about your
+            current location.</dd>
+        <dt>Bearing Led</dt>
+        <dd>Indicates that your device has an understanding of the direction
+            it is travelling.</dd>
+      </dl>
+    </div>
+    <h2>List Table</h2>
+    The List table displays all the <i>Darts</i> in a list format.  The
     nearest <i>Darts</i> will be near the center of the list and the furthest
     <i>Darts</i> will be at the top and bottom of the list. By default, the
     top of the list represents North but if you are moving then it will match
     the direction of your most recent movement.
     <p>
     Each row has the following, from left to right.
-    <ul>
-      <li>An icon representing the type of the row (e.g., <i>Contact</i>, <i>Yelp Search</i>).
-      <li>Short description of the <i>Dart</i>.
-      <li>Line-of-sight distance to the represented <i>Dart</i>.
-      <li>Arrow pointing in the direction of the <i>Dart</i>.
-    </ul>
+    <div class="border">
+      <ul>
+        <li>An icon representing the type of the row (e.g., <i>Contact</i>, <i>Yelp Search</i>).
+        <li>Short description of the <i>Dart</i>.
+        <li>Line-of-sight distance to the represented <i>Dart</i>.
+        <li>Arrow pointing in the direction of the <i>Dart</i>.
+      </ul>
+    </div>
     Note that the distance provided is the <i>line-of-sight</i> distance to the
     <i>Dart</i> and may not be the same as the driving distance to the <i>Dart</i>.
   </body>
