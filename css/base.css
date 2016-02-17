@@ -1,5 +1,19 @@
 /*
  * General style definitions.
+ *
+ * For some reason, specifying multiple classes when "display: flex" is
+ * in use doesn't seem to work. Instead, nesting seems to work o.k.
+ *
+ *   Doesn't work:
+ *     <div class="center border">
+ *     ...
+ *     </div>
+ *   Does work:
+ *     <div class="center">
+ *       <div class="border">
+ *       ...
+ *       </div>
+ *     </div>
  */
 
 /* Flex container for centering. */
@@ -10,3 +24,22 @@ div.center {
 	justify-content: center;
 }
 
+/*
+ * Override example:
+ *
+ *   width:;
+ *   margin-left: 100px;
+ *   margin-right: 100px;
+ *   
+ */
+div.border {
+  border: 5px solid gray;
+}
+div.margin_large {
+  width:;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+div.width_small {
+  width: 340px;
+}
