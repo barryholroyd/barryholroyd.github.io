@@ -22,6 +22,7 @@ div.center {
 	display: flex;
 	-webkit-justify-content: center;
 	justify-content: center;
+	flex-direction: column;
 }
 
 /*
