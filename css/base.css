@@ -22,7 +22,6 @@ div.center {
 	display: flex;
 	-webkit-justify-content: center;
 	justify-content: center;
-	flex-direction: column;
 }
 
 /*
@@ -39,7 +38,6 @@ div.border {
   padding-right: 20px;
 }
 div.margin_large {
-  width:;
   margin-left: 100px;
   margin-right: 100px;
 }
