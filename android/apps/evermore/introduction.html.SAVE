@@ -6,12 +6,14 @@
   <body>
     <center>
       <h1>Introduction</h1>
+    </center>
+    <div class="center">
       <div>
         <img src="images/introduction-left.png">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <img src="images/introduction-right.png">
       </div>
-    </center>
+    </div>
     <div class=center>
       <div class="margin_large">
     <p>
