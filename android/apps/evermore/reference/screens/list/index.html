@@ -6,15 +6,23 @@
   <body>
     <center>
       <h1 id="ListScreen">List Screen</h1>
+      <div>
+        <br><a href="#Concepts">Concepts</a>
+        <br><a href="#ListStatusBar">List Status Bar</a>
+        <br><a href="#ListTable">List Table</a>
+      </div>
     </center>
+    <p>
+    <div class=center>
+      <div class="margin_large">
     The List screen helps you identify which
     <a href="/android/apps/evermore/terminology.html#Dart"><i>Darts</i></a>
     are ahead of you and which are behind you as you travel -- generally,
     most people don't want to backtrack to go to a particular restaurant or
     gas station.
-    <h2>Concepts</h2>
+    <h2 id="Concepts">Concepts</h2>
     There are two central concepts intrinsic to the List screen.
-    <div class="border margin_large">
+    <div class="margin_large">
       <dl>
         <dt>Location</dt>
         <dd>This is your current location. When your device has access to its
@@ -28,9 +36,9 @@
     In call cases, Evermore will do its best to provide both location-based information (such as you distance from each Dart) and bearing-based information (such as the direction to each Dart).
     <p>
     Location- and bearing-dependent items will slowly fade once their respective LED turns red. This is to indicate that Evermore is giving you the best information it can, but the information is slowly aging.
-    <h2>List Status Bar</h2>
+    <h2 id="ListStatusBar">List Status Bar</h2>
     At the top is the List Status Bar. It has the following items.
-    <div class="border margin_large">
+    <div class="margin_large">
       <dl>
         <dt>Corner Arrows</dt>
         <dd>The two corner arrows indicate your bearing.</dd>
@@ -49,7 +57,7 @@
             it is travelling.</dd>
       </dl>
     </div>
-    <h2>List Table</h2>
+    <h2 id="ListTable">List Table</h2>
     The List table displays all the <i>Darts</i> in a list format.  The
     nearest <i>Darts</i> will be near the center of the list and the furthest
     <i>Darts</i> will be at the top and bottom of the list. By default, the
@@ -57,15 +65,15 @@
     the direction of your most recent movement.
     <p>
     Each row has the following, from left to right.
-    <div class="border">
-      <ul>
-        <li>An icon representing the type of the row (e.g., <i>Contact</i>, <i>Yelp Search</i>).
-        <li>Short description of the <i>Dart</i>.
-        <li>Line-of-sight distance to the represented <i>Dart</i>.
-        <li>Arrow pointing in the direction of the <i>Dart</i>.
-      </ul>
-    </div>
+    <ul>
+      <li>An icon representing the type of the row (e.g., <i>Contact</i>, <i>Yelp Search</i>).
+      <li>Short description of the <i>Dart</i>.
+      <li>Line-of-sight distance to the represented <i>Dart</i>.
+      <li>Arrow pointing in the direction of the <i>Dart</i>.
+    </ul>
     Note that the distance provided is the <i>line-of-sight</i> distance to the
     <i>Dart</i> and may not be the same as the driving distance to the <i>Dart</i>.
+    </div>
+    </div>
   </body>
 </html>
