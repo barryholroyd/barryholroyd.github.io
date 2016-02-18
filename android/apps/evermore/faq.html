@@ -1,102 +1,124 @@
-<html>
+< html>
   <head>
     <link rel="stylesheet" type="text/css" href="../../../css/background_solid.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/base.css">
   </head>
   <body>
     <center>
       <h1>FAQ</h1>
     </center>
+    <div class=center>
+      <div style="width:500px">
+        <br><a href="#YelpAndGoogleMaps">
+             How is this better/different than Yelp and Google Maps?</a>
+        <br><a href="#Contacts">What are Contacts?</a>
+        <br><a href="#Bearings">Why can't I get a bearing on the List
+     screen?</a>
+        <br><a href="#OverlappingSearches">Why do I see multiple Darts for a
+     single search result?</a>
+        <br><a href="#Futures">What new features are in the works for
+             Evermore?</a>
+      </div>
+    </div>
+    <div class=center>
+      <div class="margin_large">
 
-    <h2>Table of Contents</h2>
-      <br><a href="#YelpAndGoogleMaps">
-           How is this better/different than Yelp and Google Maps?</a>
-      <br><a href="#Contacts">What are Contacts?</a>
-      <br><a href="#Bearings">Why can't I get a bearing on the List screen?</a>
-      <br><a href="#OverlappingSearches">Why do I see multiple Darts for a single search result?</a>
-      <br><a href="#Futures">What new features are in the works for Evermore?</a>
+        <h2 id="YelpAndGoogleMaps">How is this better/different than Yelp and
+            Google Maps?</h2>
+        Neither Yelp nor Google Maps:
+          <ol>
+            <li>provide targets to center your searches on.
+            <li>allow you to do multiple simultaneous searches.
+            <li>allow you to do searches of multiple types.
+            <li>support searches through your address book.
+            <li>provide a list of results with a color-coded arrow pointing
+                in the physical direction of each result.
+            <li>show search results in multiple <i>targetted</i> areas.
+          </ol>
 
-    <h2 id="YelpAndGoogleMaps">How is this better/different than Yelp and
-        Google Maps?</h2>
-    Neither Yelp nor Google Maps:
-      <ol>
-        <li>provide targets to center your searches on.
-        <li>allow you to do multiple simultaneous searches.
-        <li>allow you to do searches of multiple types.
-        <li>support searches through your address book.
-        <li>provide a list of results with a color-coded arrow pointing in the
-            physical direction of each result.	
-        <li>show search results in a number of <i>targetted</i> areas.
-      </ol>
-    <h2 id="Contacts">What are Contacts?</h2>
-    Contacts are addresses pulled from your device's address book and displayed
-    on the map as home and work addresses.
-    <p>
-    Contacts get loaded the first time the app is run after installation. 
-    While this is happening, a progress bar is displayed in the lower left
-    portion of the screen. Small messages indicating the start and end of
-    the loading process will also appear briefly at the bottom of the screen.
-    <p>
-    After this initial load, the Contacts will be silently refreshed each
-    time the app is started. Because this can take some time, but typically
-    results in only small changes in the list of loaded Contacts, no progress
-    bar is shown.
-    <p>
-    The display of a Contact on the map in Evermore depends on the Contact
-    having a postal address (home and/or work) and that any such addresses
-    can be mapped to a latitude and longitude. If an address is missing or
-    mal-formed or if Google's Geocoder can't locate it, then it won't be
-    displayed on the map.
-    <h2 id="Bearings">Why can't I get a bearing on the List screen?</h2>
-    Devices generally can obtain a <a href="terminology.html#Location">location</a> much more easily
-    than a <a href="terminology.html#Bearing">bearing</a>. When location information is
-    obtained by the device, by definition it always contains the location. It may or may
-    not include bearing information. The device has to determine if it is moving and,
-    if so, in which direction. The implementation of this appears to vary greatly by
-    manufacturer. In all cases, Android apps simply need to wait for the information
-    to be provided. When displaying the List screen (where location and bearing are most
-    relevant), Evermore attempts to keep you as informed as possible regarding the status
-    of both location and bearing information via two mechanisms.
-    <ol>
-      <dl>
-        <dt>LEDs
-	<dd>At the top of the List screen are two leds -- one for location
-	    and one for bearing. By default, they are red, indicating that no
-	    current location/bearing information is available. They turn
-	    green when the information becomes available.  Because bearing
-	    information is a subset of the overall location information, the
-	    location LED will always turn green before the bearing LED.
-	    Because bearing information can be difficult to obtain, you may
-	    find that the bearing LED remains red long after the location LED
-	    has turned green.
-	<dt>Dimming
-	<dd>Each row on the List screen has the distance to the Dart (search
-	    result) at the right end of the row, followed by an arrow
-	    pointing in the physical direction of the Dart. When a location
-	    or bearing signal is lost, the LED will immediately turn red.
-	    Evermore will continue to present the latest information
-	    available (distance and direction of each Dart). However, the
-	    distance text will slowly fade over time after the location LED
-	    has turned red, to indicate that the information is getting
-	    stale. Similarly, the colored arrows at the end of the rows will
-	    slowly fade after the bearing LED turns red.
-      </dl>
-    </ol>
-    <h2 id="OverlappingSearches">Why do I see multiple Darts for a single search result?</h2>
-    If there are multiple Targets on the map with overlapping radii, then a
-    search may have multiple Darts appear at the same location -- one for
-    each of the radii. This is by design. You have the option of clearing a
-    search -- with this approach, an appropriate number of Darts will still
-    be present at each location.
-    <p>
-    <h2 id="Futures">What new features are in the works for Evermore?</h2>
-    Evermore is highly expandable. Because it is map-driven and
-    search-agnostic, over time more and more services and features can be added.
-    For instance:
-    <ol>
-      <li>Long tap on the map to produce a pop-up showing the current local
-          time at that location as well as a short weather synopsis.
-      <li>Save specific configurations of targets and searches so that you
-          can plot out a trip and then call up that configuration later.
-    </ol>
+        <h2 id="Contacts">What are Contacts?</h2>
+            Contacts are addresses pulled from your device's address book and
+	    displayed on the map as home and work addresses.
+        <p>
+        Contacts get loaded the first time the app is run after
+	installation.  While this is happening, a progress bar is displayed
+	in the lower left portion of the screen. Small messages indicating
+	the start and end of the loading process will also appear briefly at
+	the bottom of the screen.
+        <p>
+        After the initial load, your Contacts will be silently refreshed each
+	time the app is started. Because this can take some time, but
+	typically results in only small changes in the list of loaded
+	Contacts, no progress bar is shown.
+        <p>
+        The display of a Contact on the map in Evermore depends on the
+	Contact having a postal address (home and/or work) and that the
+	address can be mapped to a latitude and longitude. If an address is
+	missing or mal-formed or if Google's Geocoder can't locate it, then
+	it won't be displayed on the map.
+
+        <h2 id="Bearings">Why can't I get a bearing on the List screen?</h2>
+        Devices can generally obtain a <a
+	href="terminology.html#Location">location</a> much more easily than a
+	<a href="terminology.html#Bearing">bearing</a>. When location
+	information is obtained by the device, it always contains a latitude
+	and longitude (the location itself) and it <i>may</i> contain bearing
+	information. In order to provide bearing information, the device has
+	to determine if it is moving and, if so, in which direction. The
+	implementation of this appears to vary greatly by manufacturer. In
+	all cases, Android apps simply need to wait for the information to be
+	provided. When displaying the List screen (where location and bearing
+	are most relevant), Evermore attempts to keep you as informed as
+	possible regarding the status of both location and bearing
+	information via two mechanisms.
+        <ol>
+          <dl>
+            <dt>LEDs
+            <dd>At the top of the List screen are two leds -- one for
+	        location and one for bearing. By default, they are red,
+		indicating that no current location/bearing information is
+		available. They turn green when the information becomes
+		available.  Because bearing information is a subset of the
+		overall location information, the location LED will always
+		turn green before the bearing LED.  Because bearing
+		information can be difficult to obtain, you may find that the
+		bearing LED remains red long after the location LED has
+		turned green.
+            <dt>Dimming
+            <dd>Each row on the List screen has the distance to the Dart
+	        (search result) at the right end of the row, followed by an
+		arrow pointing in the physical direction of the Dart. When a
+		location or bearing signal is lost, the LED will immediately
+		turn red.  Evermore will continue to present the latest
+		information available (distance and direction of each Dart).
+		However, the distance text will slowly fade over time after
+		the location LED has turned red, to indicate that the
+		information is getting stale. Similarly, the colored arrows
+		at the end of the rows will slowly fade after the bearing LED
+		turns red.
+          </dl>
+        </ol>
+
+        <h2 id="OverlappingSearches">Why do I see multiple Darts for a single
+	  search result?</h2>
+        If there are multiple Targets on the map with overlapping radii, then
+	a search may have multiple Darts appear at the same location -- one
+	for each of the radii. This is by design. You have the option of
+	clearing a search -- with this approach, an appropriate number of
+	Darts will still be present at each location.
+        <p>
+	
+        <h2 id="Futures">What new features are in the works for Evermore?</h2>
+        Evermore is highly expandable. Because it is map-driven and
+	search-agnostic, over time more and more services and features can be
+	added.  For instance:
+        <ol>
+          <li>Long tap on the map to produce a pop-up showing the current
+	      local time at that location as well as a short weather synopsis.
+          <li>Save specific configurations of targets and searches so that
+	      you can plot out a trip and then call up that configuration later.
+        </ol>
+      </div>
+    </div>
   </body>
 </html>
