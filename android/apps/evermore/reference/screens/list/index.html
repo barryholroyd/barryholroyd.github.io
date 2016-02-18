@@ -6,39 +6,50 @@
   <body>
     <center>
       <h1 id="ListScreen">List Screen</h1>
-      <div>
-        <br><a href="#Concepts">Concepts</a>
-        <br><a href="#ListStatusBar">List Status Bar</a>
-        <br><a href="#ListTable">List Table</a>
-      </div>
+      <div class="margin200">
+        The List screen helps you identify which
+        <a href="/android/apps/evermore/terminology.html#Dart"><i>Darts</i></a>
+        are ahead of you and which are behind you as you travel -- generally,
+        most people don't want to backtrack to go to a particular restaurant or
+        gas station.
+        <div style="text-align:center">
+          <br><a href="#Concepts">Concepts</a>
+          <br><a href="#ListStatusBar">List Status Bar</a>
+          <br><a href="#ListTable">List Table</a>
+        </div>
+        <p>
+        <img src="../../images/screen-list-large.png">
+        <p>
     </center>
-    <p>
     <div class=center>
-      <div class="margin_large">
-    The List screen helps you identify which
-    <a href="/android/apps/evermore/terminology.html#Dart"><i>Darts</i></a>
-    are ahead of you and which are behind you as you travel -- generally,
-    most people don't want to backtrack to go to a particular restaurant or
-    gas station.
-    <h2 id="Concepts">Concepts</h2>
-    There are two central concepts intrinsic to the List screen.
-    <div class="margin_large">
-      <dl>
-        <dt>Location</dt>
-        <dd>This is your current location. When your device has access to its
-            location information, the location LED in the status bar will be
-	    green. During those times when it cannot get a fix on its current
-	    location, it will be red.</dd>
-        <dt>Bearing</dt>
-        <dd>This is the direction your device (and generally you) is moving. It is <i>not</i> the direction the device is facing. When the device can get its bearing, the bearing LED will be green; otherwise, it will be red. It can sometimes be hard for a device to get its bearing -- your bearing LED may often be red when your location LED is green.
-      </dl>
-    </div>
-    In call cases, Evermore will do its best to provide both location-based information (such as you distance from each Dart) and bearing-based information (such as the direction to each Dart).
+      <div class="margin100">
+        <h2 id="Concepts">Concepts</h2>
+        There are two central concepts intrinsic to the List screen.
+        <div class="margin50">
+            <dl>
+              <dt>Location</dt>
+              <dd>This is your current location. When your device has access to its
+                  location information, the location LED in the status bar will be
+	          green. During those times when it cannot get a fix on its current
+	          location, it will be red.</dd>
+              <dt>Bearing</dt>
+              <dd>This is the direction your device (and generally you) is
+	          moving. It is <i>not</i> necessarily the direction the
+		  device is facing.  When the device can get its bearing, the
+		  bearing LED will be green; otherwise, it will be red. It
+		  can sometimes be hard for a device to get its bearing --
+		  your bearing LED may often be red when your location LED is
+		  green.
+            </dl>
+          </div>
+          In call cases, Evermore will do its best to provide both
+	  location-based information (such as your distance from each Dart)
+	  and bearing-based information (such as the direction to each Dart).
     <p>
     Location- and bearing-dependent items will slowly fade once their respective LED turns red. This is to indicate that Evermore is giving you the best information it can, but the information is slowly aging.
     <h2 id="ListStatusBar">List Status Bar</h2>
     At the top is the List Status Bar. It has the following items.
-    <div class="margin_large">
+    <div class="margin50">
       <dl>
         <dt>Corner Arrows</dt>
         <dd>The two corner arrows indicate your bearing.</dd>
@@ -65,15 +76,18 @@
     the direction of your most recent movement.
     <p>
     Each row has the following, from left to right.
+    <div style="margin-left:20; margin-right:20">
     <ul>
       <li>An icon representing the type of the row (e.g., <i>Contact</i>, <i>Yelp Search</i>).
       <li>Short description of the <i>Dart</i>.
       <li>Line-of-sight distance to the represented <i>Dart</i>.
       <li>Arrow pointing in the direction of the <i>Dart</i>.
     </ul>
+    </div>
     Note that the distance provided is the <i>line-of-sight</i> distance to the
     <i>Dart</i> and may not be the same as the driving distance to the <i>Dart</i>.
     </div>
     </div>
+    </center>
   </body>
 </html>
