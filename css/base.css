@@ -54,7 +54,10 @@ div.tutorial-margin-top {
 img.button-margin {
   margin:15px;
 }
-
+button.clear {
+  background: transparent;
+  border: 0px;
+}
 
 /* Images */
 img.size-medium {

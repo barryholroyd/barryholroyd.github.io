@@ -1,12 +1,6 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="../../../../css/base.css">
-  <style>
-  button {
-    background: transparent;
-    border: 0px;
-  }
-  </style>
   </head>
   <body>
     <center>
@@ -27,14 +21,10 @@
         <br>At the far right is the app's <a href="menu.html">Menu</a>.
       </div>
 
-      <button onclick="goBack()">
+      <script src="../../../../javascript/base.js"></script>
+      <button class="clear" onclick="goBack()">
         <img class="button-margin" src="../data/buttons/back.png">
       </button>
-      <script>
-        function goBack() {
-	  window.history.back();
-	}
-      </script>
 
     </center>
   </body>
