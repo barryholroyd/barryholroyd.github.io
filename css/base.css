@@ -17,7 +17,7 @@
  */
 
 /* Flex container for centering. */
-div.center {
+.center {
 	display: -webkit-flex;
 	display: flex;
 	-webkit-justify-content: center;
