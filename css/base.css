@@ -16,6 +16,10 @@
  *     </div>
  */
 
+body {
+  background-color:#b3ffcc
+}
+
 /* Flex container for centering. */
 .center {
 	display: -webkit-flex;
@@ -23,7 +27,6 @@
 	-webkit-justify-content: center;
 	justify-content: center;
 }
-
 div.border {
   border: 3px solid gray;
   padding-left: 20px;
@@ -41,3 +44,26 @@ div.margin200 {
   margin-left: 200px;
   margin-right: 200px;
 }
+
+/* Tutorials */
+div.tutorial-margin-top {
+  margin-top:50px;
+}
+
+/* Buttons */
+img.button-margin {
+  margin:15px;
+}
+
+
+/* Images */
+img.size-medium {
+  width:240px;
+  height:150px;
+}
+img.size-large {
+  width:480px;
+  height:300px;
+}
+
+
