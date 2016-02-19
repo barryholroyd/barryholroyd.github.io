@@ -1,6 +1,12 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="../../../../css/base.css">
+  <style>
+  button {
+    background: transparent;
+    border: 0px;
+  }
+  </style>
   </head>
   <body>
     <center>
@@ -13,15 +19,23 @@
         <p>In the center are three radio buttons representing the three main screens.
       </div>
       <div style="width:350px; text-align:left; padding-left:160px">
-        <a href="screens/main/index.html">Main Screen</a>
-        <br>
-        <a href="screens/map/index.html">Map Screen</a>
-        <br>
-        <a href="screens/list/index.html">List Screen</a>
+        Main Screen
+        <br>Map Screen
+        <br>List Screen
       </div>
       <div style="width:350px; text-align:left">
         <br>At the far right is the app's <a href="menu.html">Menu</a>.
       </div>
+
+      <button onclick="goBack()">
+        <img class="button-margin" src="../data/buttons/back.png">
+      </button>
+      <script>
+        function goBack() {
+	  window.history.back();
+	}
+      </script>
+
     </center>
   </body>
 </html>
