@@ -44,10 +44,18 @@ div.margin200 {
   margin-left: 200px;
   margin-right: 200px;
 }
+div.margin350 {
+  margin-left: 350px;
+  margin-right: 350px;
+}
 
 /* Tutorials */
 div.tutorial-margin-top {
   margin-top:50px;
+}
+div.tutorial-caption {
+  width:425px;
+  text-align:left;
 }
 
 /* Buttons */
