@@ -9,8 +9,9 @@
     <div class=center>
       <div style="width:500px">
         <br><a href="#YelpAndGoogleMaps">
-             How is this better/different than Yelp and Google Maps?</a>
+             How is Evermore better/different than Yelp and Google Maps?</a>
         <br><a href="#Contacts">What are Contacts?</a>
+        <br><a href="#GeocoderFails">Evermore Won't Recognize a Valid Address</a>
         <br><a href="#Bearings">Why can't I get a bearing on the List
      screen?</a>
         <br><a href="#OverlappingSearches">Why do I see multiple <i>Darts</i> for a
@@ -22,8 +23,8 @@
     <div class=center>
       <div class="margin100">
 
-        <h2 id="YelpAndGoogleMaps">How is this better/different than Yelp and
-            Google Maps?</h2>
+        <h2 id="YelpAndGoogleMaps">How is Evermore better/different than Yelp
+	    and Google Maps?</h2>
         Neither Yelp nor Google Maps:
           <ol>
             <li>allows you to do multiple types of searches.
@@ -49,15 +50,26 @@
 	typically results in only small changes in the list of loaded
 	Contacts, no progress bar is shown.
         <p>
-        The display of a Contact on the map in Evermore depends on the
-	Contact having a postal address (home and/or work) and that the
-	address can be mapped to a latitude and longitude. If an address is
-	missing or mal-formed or if Google's Geocoder can't locate it, then
-	it won't be displayed on the map.
+	For a Contact to be loaded into Evermore:
+	<ol>
+	  1. It must be in your device's address book.
+	  2. It must have a valid home and/or work postal address.
+	  3. Google's geocoder server must be able to translate it
+	    to a latitude/longitude pair.
+	</ol>
+
+	<h2 id="GeocoderFails">Evermore Won't Recognize a Valid Address</h2>
+	In some cases, an address may be valid yet Evermore won't recognize
+	it. Evermore uses Google's geocoder and, for some reason, the
+	geocoder doesn't always recognize valid addresses. The workaround for
+	this is to change the address slightly -- e.g., increment the address
+	by 1. Although that is less than ideal, it is often sufficient for
+	the geocoder to recognize the address.
 
         <h2 id="Bearings">Why can't I get a bearing on the List screen?</h2>
         Devices can generally obtain a <a
-	href="terminology.html#Location">location</a> much more easily than a
+	href="terminology.html#Location">location</a>
+	much more easily than a
 	<a href="terminology.html#Bearing">bearing</a>. When location
 	information is obtained by the device, it always contains a latitude
 	and longitude (the location itself) and it <i>may</i> contain bearing
@@ -83,7 +95,8 @@
 		bearing LED remains red long after the location LED has
 		turned green.
             <dt>Dimming
-            <dd>Each row on the List screen has the distance to the <i>Dart</i>
+            <dd>Each row on the List screen has the distance to the
+		href="terminology.html#Dart">Dart</a>
 	        (search result) at the right end of the row, followed by an
 		arrow pointing in the physical direction of the <i>Dart</i>. When a
 		location or bearing signal is lost, the LED will immediately
@@ -97,14 +110,14 @@
           </dl>
         </ol>
 
-        <h2 id="OverlappingSearches">Why do I see multiple <i>Darts</i> for a single
-	  search result?</h2>
-        If there are multiple <i>Targets</i> on the map with overlapping radii, then
-	a search may have multiple <i>Darts</i> appear at the same location -- one
-	for each of the radii. This is by design. You have the option of
-	clearing a search -- with this approach, an appropriate number of
-	<i>Darts</i> will still be present at each location.
-        <p>
+        <h2 id="OverlappingSearches">Why do I see multiple <i>Darts</i> for a
+	    single search result?</h2>
+        If there are multiple <i>Targets</i> on the map with overlapping
+	radii, then a search may have multiple <i>Darts</i> appear at the
+	same location -- one for each of the radii. This is by design. You
+	have the option of clearing a search -- with this approach, an
+	appropriate number of <i>Darts</i> will still be present at each
+	location.
 	
         <h2 id="Futures">What new features are in the works for Evermore?</h2>
         Evermore is highly expandable. Because it is map-driven and

@@ -76,5 +76,8 @@ img.size-large {
   width:480px;
   height:300px;
 }
+img.image-margin {
+  margin:15px;
+}
 
 
