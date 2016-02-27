@@ -5,23 +5,35 @@
   <body>
     <center>
       <h1>FAQ</h1>
+      <h2>General</h2>
     </center>
     <div class=center>
       <div style="width:500px">
-        <br><a href="#YelpAndGoogleMaps">
+        <a href="#YelpAndGoogleMaps">
              How is Evermore better/different than Yelp and Google Maps?</a>
         <br><a href="#Contacts">What are Contacts?</a>
-        <br><a href="#GeocoderFails">Evermore Won't Recognize a Valid Address</a>
+        <br><a href="#GeocoderFails">Evermore won't recognize a valid address</a>
         <br><a href="#Bearings">Why can't I get a bearing on the List
      screen?</a>
         <br><a href="#OverlappingSearches">Why do I see multiple <i>Darts</i> for a
-        <br><a href="#NoSearchResults">When I do a Yelp search Evermore doesn't find anything.</a>
         <br><a href="#Futures">What new features are in the works for
              Evermore?</a>
       </div>
     </div>
+    <center>
+      <h2>Yelp</h2>
+    </center>
     <div class=center>
-      <div class="margin100">
+      <div style="width:500px">
+        <a href="#YelpNoSearchResults">When I do a Yelp search Evermore doesn't find anything.</a>
+        <br><a href="#YelpSearchExceedsRadius">Yelp search exceeds radius</a>
+        <br><a href="#YelpPriceFilter">Can I filter Yelp searches by price?</a>
+        <br><a href="#YelpRatingsFilter">Can I filter Yelp searches by rating?</a>
+      </dev>
+    </dev>
+
+    <div class=center>
+      <div style="width:500px">
 
         <h2 id="YelpAndGoogleMaps">How is Evermore better/different than Yelp
 	    and Google Maps?</h2>
@@ -119,16 +131,28 @@
 	appropriate number of <i>Darts</i> will still be present at each
 	location.
 
-        <h2 id="NoSearchResults">When I do a Yelp search Evermore doesn't
+        <h2 id="Futures">What new features are in the works for Evermore?</h2>
+        Evermore is highly expandable. Because it is map-driven and
+	search-agnostic, over time more and more services and features can be
+	added.  For instance:
+        <ol>
+          <li>Long tap on the map to produce a pop-up showing the current
+	      local time at that location as well as a short weather synopsis.
+          <li>Save specific configurations of targets and searches so that
+	      you can plot out a trip and then call up that configuration later.
+        </ol>
+
+	<!-- YELP -->
+        <h2 id="YelpNoSearchResults">When I do a Yelp search Evermore doesn't
 	    find anything.</h2>
-	There are several reasons that an Evermore search may fail. In case
+	There are several reasons that an Evermore search may fail. In each
 	case, it should give you a reasonable explanation of why the search
 	failed, although sometimes the failure might still be perplexing.
 	Here are some common causes.
 	<ol>
 	  <li>Many Yelp searches actually do yield no results, in which case
-	      a short pop up window should tell you that nothing was found.
-	      Also, the small led for the search should be lit only if
+	      a short pop up window will tell you that nothing was found.
+	      Also, the small led for the search will be lit only if
 	      something is found.
 	  <li>Be sure that you have a <i>Target</i> on the map. Evermore will
 	      not do a search without a <i>Target</i> present.
@@ -144,17 +168,32 @@
 	      surface area for the map to be displayed.
 	</ol>
 
-        <h2 id="Futures">What new features are in the works for Evermore?</h2>
-        Evermore is highly expandable. Because it is map-driven and
-	search-agnostic, over time more and more services and features can be
-	added.  For instance:
-        <ol>
-          <li>Long tap on the map to produce a pop-up showing the current
-	      local time at that location as well as a short weather synopsis.
-          <li>Save specific configurations of targets and searches so that
-	      you can plot out a trip and then call up that configuration later.
-        </ol>
+        <h2 id="YelpSearchExceedsRadius">Yelp search exceeds radius</h2>
+        Yelp searches sometimes return items that are outside of the specified
+	radius. For example, you might specify a radius of two miles yet a
+	search returns something that is four or five miles away. This is
+	a quirk of Yelp -- Evermore simply displays whatever Yelp returns.
 
+        <h2 id="YelpPriceFilter">Can I filter Yelp searches by price?</h2>
+	Yelp searches (e.g., for restaurants) cannot be filtered by price
+	(the Yelp API doesn't provide that capability).
+
+        <h2 id="YelpRatingsFilter">Can I filter Yelp searches by rating?</h2>
+	When doing a Yelp search in Evermore, you can specify a rating as a
+	filter. Although the Yelp API doesn't provide that capability directly,
+	the returned results do include ratings, so if
+	you specify a rating in Evermore it will first collect all results
+	without specifying a rating, and then apply the rating filter itself and
+	return only those results with the specified rating or higher.
+	<p>This has one subtle side effect which may be unexpected. The final
+	result set might have fewer results than the maximum allowed, even
+	though there are valid results that aren't included.
+	<p>This can happen when Evermore initially collects the maximum number
+	of possible results without the ratings filter, then ends up with fewer
+	than the maximum after applying the filter. When this happens, you will
+	get a short pop up notice indicating that the maximum number was found
+	initially, but the total result set returned was smaller due to the
+	filtering.
       </div>
     </div>
     <center>
