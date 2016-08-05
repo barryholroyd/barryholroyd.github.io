@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.yelp.dialogs;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import android.content.Context;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import android.view.LayoutInflater;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import android.view.View;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import android.view.ViewGroup;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import android.widget.ArrayAdapter;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import android.widget.TextView;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import com.barryholroyd.evermore.R;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import com.barryholroyd.evermore.yelp.categories.Category;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import java.util.List;<a name="line.21"></a>
+<span class="sourceLineNo">022</span><a name="line.22"></a>
+<span class="sourceLineNo">023</span>public class YelpCategorySpinnerArrayAdapter extends ArrayAdapter&lt;Category&gt;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>{<a name="line.24"></a>
+<span class="sourceLineNo">025</span>        private final int rid;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>        public YelpCategorySpinnerArrayAdapter(Context c, int resource, List&lt;Category&gt; categories) {<a name="line.26"></a>
+<span class="sourceLineNo">027</span>                super(c, resource, categories);<a name="line.27"></a>
+<span class="sourceLineNo">028</span>                rid = resource;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>        }<a name="line.29"></a>
+<span class="sourceLineNo">030</span>        @Override<a name="line.30"></a>
+<span class="sourceLineNo">031</span>        public View getView(int position, View convertView, ViewGroup parent) {<a name="line.31"></a>
+<span class="sourceLineNo">032</span>                /*<a name="line.32"></a>
+<span class="sourceLineNo">033</span>                 * This is the getView() defined by the top-level Adapter interface. It<a name="line.33"></a>
+<span class="sourceLineNo">034</span>                 * is implemented by all Adapters. In the case of a Spinner, when an item<a name="line.34"></a>
+<span class="sourceLineNo">035</span>                 * in the menu is selected, the value returned here will be displayed on<a name="line.35"></a>
+<span class="sourceLineNo">036</span>                 * the spinner.<a name="line.36"></a>
+<span class="sourceLineNo">037</span>                 *<a name="line.37"></a>
+<span class="sourceLineNo">038</span>                 * This gets called multiple times when an item is selected -- typically<a name="line.38"></a>
+<span class="sourceLineNo">039</span>                 * for about 15 nearby items and often more than once per item. From stack<a name="line.39"></a>
+<span class="sourceLineNo">040</span>                 * traces, it appears to be called during multiple measurement/layout passes.<a name="line.40"></a>
+<span class="sourceLineNo">041</span>                 *<a name="line.41"></a>
+<span class="sourceLineNo">042</span>                 * There is nothing magic about this View or the resource id passed in to<a name="line.42"></a>
+<span class="sourceLineNo">043</span>                 * the ArrayAdapter constructor. A View (e.g., TextView) needs to be created.<a name="line.43"></a>
+<span class="sourceLineNo">044</span>                 * It can be created with new (e.g., new TextView()) or via inflation. The<a name="line.44"></a>
+<span class="sourceLineNo">045</span>                 * resource id can be specified directly here or it could be passed in as the<a name="line.45"></a>
+<span class="sourceLineNo">046</span>                 * resource id (the latter approach makes this class more flexible).<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                 *<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                 * Inflation:<a name="line.48"></a>
+<span class="sourceLineNo">049</span>                 *   o The "parent" ViewGroup is provided so that the android:layout_* attributes<a name="line.49"></a>
+<span class="sourceLineNo">050</span>                 *     of TextView won't get ignored.<a name="line.50"></a>
+<span class="sourceLineNo">051</span>                 *   o The attachToRoot parameter of inflate() is false because we shouldn't<a name="line.51"></a>
+<span class="sourceLineNo">052</span>                 *     attach the View to its parent here -- that will presumably be handled<a name="line.52"></a>
+<span class="sourceLineNo">053</span>                 *     by the adapter.<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                 */<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                TextView tv;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                if (convertView == null) {<a name="line.56"></a>
+<span class="sourceLineNo">057</span>                        LayoutInflater li =<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                                (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                        tv = (TextView) li.inflate(rid,  parent, false);<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                }<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                else {<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                        tv = (TextView) convertView;<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                }<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                Category category = getItem(position);<a name="line.64"></a>
+<span class="sourceLineNo">065</span>                tv.setText(category.getTitle());<a name="line.65"></a>
+<span class="sourceLineNo">066</span>                return tv;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>        }<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        @Override<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        public View getDropDownView(int position, View convertView, ViewGroup parent) {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                /*<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                 * This method is specific to Spinners. It gets called for each individual<a name="line.71"></a>
+<span class="sourceLineNo">072</span>                 * View in the spinner's dropdown menu. "position" is the View's position<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                 * in the dropdown. This is where you can set the text of the individual<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                 * items in the menu.<a name="line.74"></a>
+<span class="sourceLineNo">075</span>                 *<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                 * It gets called multiple times, similar to getView() (see the comments there).<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                 */<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                View view = super.getDropDownView(position, convertView, parent);<a name="line.78"></a>
+<span class="sourceLineNo">079</span>                TextView tv = (TextView) view;<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                // Set alternating background colors for spinner menu items.<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                if(position % 2 == 0) tv.setBackgroundResource(R.color.blue_light_2);<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                else                  tv.setBackgroundResource(R.color.blue_light_3);<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                // Set the text for the menu item.<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                Category category = getItem(position);<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                tv.setText(category.getTitle());<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                return view;<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        }<a name="line.87"></a>
+<span class="sourceLineNo">088</span>}<a name="line.88"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.panels;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import android.app.Activity;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import android.content.Intent;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import android.os.Process;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import android.os.Build;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import android.view.Menu;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import android.view.MenuItem;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import android.view.View;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import android.widget.RadioButton;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import android.widget.RadioGroup;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import android.support.v7.widget.Toolbar;<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>import com.barryholroyd.evermore.ActivityMain;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import com.barryholroyd.evermore.Configure;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import com.barryholroyd.evermore.R;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import com.barryholroyd.evermore.debugging.logger.BhLogger;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import com.barryholroyd.evermore.preferences.EmPreferenceActivity;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import com.barryholroyd.evermore.screens.ScreenStateManager;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import com.barryholroyd.evermore.utils.Intents;<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>import static com.barryholroyd.evermore.panels.PanelAppbar.*;<a name="line.32"></a>
+<span class="sourceLineNo">033</span><a name="line.33"></a>
+<span class="sourceLineNo">034</span>/*<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * PanelAppbar at the top.<a name="line.35"></a>
+<span class="sourceLineNo">036</span> */<a name="line.36"></a>
+<span class="sourceLineNo">037</span>public class PanelAppbar<a name="line.37"></a>
+<span class="sourceLineNo">038</span>{<a name="line.38"></a>
+<span class="sourceLineNo">039</span>        //&lt;editor-fold desc="FIELDS"&gt;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>        static final int MENU_EXIT = Menu.FIRST + 1;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        static final int MENU_SETTINGS = Menu.FIRST + 2;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>        static final int MENU_HELP = Menu.FIRST + 3;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        static int radioButtonRid = R.id.radiobutton_appbar_main; // default<a name="line.43"></a>
+<span class="sourceLineNo">044</span>        //&lt;/editor-fold&gt;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        //&lt;editor-fold desc="INITIALIZATION"&gt;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>        static public  void init() {<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                Toolbar tb = (Toolbar) ActivityMain.getActivity().findViewById(R.id.bar_appbar);<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                initText(tb);<a name="line.48"></a>
+<span class="sourceLineNo">049</span>                initMenu(tb);<a name="line.49"></a>
+<span class="sourceLineNo">050</span>                initRadioGroup(tb);<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        }<a name="line.51"></a>
+<span class="sourceLineNo">052</span>        static private void initText(Toolbar tb) {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>                tb.setTitle(R.string.app_name);<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                tb.setTitleTextAppearance(ActivityMain.getActivity(),<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                        R.style.EvermoreTextAppearance_LargeItalic);<a name="line.55"></a>
+<span class="sourceLineNo">056</span>        }<a name="line.56"></a>
+<span class="sourceLineNo">057</span>        static private void initMenu(Toolbar tb) {<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                tb.setOnMenuItemClickListener(new OnMenuItemClickListener());<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                Menu actionMenu = tb.getMenu();<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                createMenuItem(actionMenu, MENU_SETTINGS, 1, R.string.menu_settings);<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                createMenuItem(actionMenu, MENU_HELP, 2, R.string.menu_help);<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                createMenuItem(actionMenu, MENU_EXIT, 3, R.string.menu_exit);<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        }<a name="line.63"></a>
+<span class="sourceLineNo">064</span>        static private void createMenuItem(Menu actionMenu, int itemId, int order, int rid) {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>                MenuItem menuItem = actionMenu.add(Menu.NONE, itemId, order, rid);<a name="line.65"></a>
+<span class="sourceLineNo">066</span>                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);<a name="line.66"></a>
+<span class="sourceLineNo">067</span>        }<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        static private void initRadioGroup(Toolbar tb) {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>                RadioGroup rg = (RadioGroup) tb.findViewById(R.id.radio_group_app_bar);<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                setRadioButton(rg, R.id.radiobutton_appbar_main, new MainButton());<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                setRadioButton(rg, R.id.radiobutton_appbar_map,  new MapButton());<a name="line.71"></a>
+<span class="sourceLineNo">072</span>                setRadioButton(rg, R.id.radiobutton_appbar_list, new ListButton());<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                checkRadioButton(rg);<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        }<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        static private void setRadioButton(<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                RadioGroup rg, int radioButtonCheckedRid, View.OnClickListener cback) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                // Radio button last clicked on.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                RadioButton rb = (RadioButton) rg.findViewById(radioButtonCheckedRid);<a name="line.78"></a>
+<span class="sourceLineNo">079</span>                rb.setOnClickListener(cback);<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        }<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        static private void checkRadioButton(RadioGroup rg) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                /*<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                 * When the device gets rotated, Activity's onSaveInstanceState() and<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                 * onRestoreInstanceState() get called, ensuring that the UI is fully<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                 * restored (including the state of the radio buttons). However, when<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                 * the Back button is used, these do *not* get called so it is important<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                 * to handle it ourselves. Because the app isn't destroyed by pressing Back,<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                 * all static variables are retained. The result is that the right Screen<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                 * (Main, Map, List) is displayed, but we need to use a static variable to<a name="line.89"></a>
+<span class="sourceLineNo">090</span>                 * ensure that the right radio button is checked to reflect that.<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                 */<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                rg.setOnCheckedChangeListener(new OnCheckedChangedListenerRadioGroup());<a name="line.92"></a>
+<span class="sourceLineNo">093</span>                rg.check(radioButtonRid);<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        }<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        //&lt;/editor-fold&gt;<a name="line.95"></a>
+<span class="sourceLineNo">096</span>}<a name="line.96"></a>
+<span class="sourceLineNo">097</span>class OnMenuItemClickListener implements Toolbar.OnMenuItemClickListener {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        private static final BhLogger bhrel = BhLogger.bhrel();<a name="line.98"></a>
+<span class="sourceLineNo">099</span><a name="line.99"></a>
+<span class="sourceLineNo">100</span>        @Override<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        public boolean onMenuItemClick(MenuItem item) {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                try {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                        Activity a = ActivityMain.getActivity();<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                        switch (item.getItemId()) {<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                                case MENU_SETTINGS:<a name="line.105"></a>
+<span class="sourceLineNo">106</span>                                        Class clazz = EmPreferenceActivity.class;<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                                        Intent i = new Intent(a, clazz);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                                        a.startActivity(i);<a name="line.108"></a>
+<span class="sourceLineNo">109</span>                                        return true;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>                                case MENU_HELP:<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                                        Intents.viewUri(ActivityMain.getActivity(), Configure.APP_HELP);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                                        return true;<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                                case MENU_EXIT:<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                                        if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP)<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                                                a.finishAndRemoveTask();<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                                        else {<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                                                a.moveTaskToBack(true);<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                                                Process.killProcess(Process.myPid());<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                                                System.exit(1);<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                                        }<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                                        return true;<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                        }<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                }<a name="line.123"></a>
+<span class="sourceLineNo">124</span>                catch (Exception e) {<a name="line.124"></a>
+<span class="sourceLineNo">125</span>                        bhrel.exception(e);<a name="line.125"></a>
+<span class="sourceLineNo">126</span>                        throw e;<a name="line.126"></a>
+<span class="sourceLineNo">127</span>                }<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                return false;<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        }<a name="line.129"></a>
+<span class="sourceLineNo">130</span>}<a name="line.130"></a>
+<span class="sourceLineNo">131</span>class MainButton implements View.OnClickListener {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        public void onClick(View v) {<a name="line.132"></a>
+<span class="sourceLineNo">133</span>                ActivityMain.getScreenStateManager().newScreen(<a name="line.133"></a>
+<span class="sourceLineNo">134</span>                        ScreenStateManager.getScreenState(),<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                        ScreenStateManager.ScreenState.MAIN);<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        }<a name="line.136"></a>
+<span class="sourceLineNo">137</span>}<a name="line.137"></a>
+<span class="sourceLineNo">138</span>class MapButton  implements View.OnClickListener {<a name="line.138"></a>
+<span class="sourceLineNo">139</span>        public void onClick(View v) {<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                ActivityMain.getScreenStateManager().newScreen(<a name="line.140"></a>
+<span class="sourceLineNo">141</span>                        ScreenStateManager.getScreenState(),<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                        ScreenStateManager.ScreenState.MAP);<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        }<a name="line.143"></a>
+<span class="sourceLineNo">144</span>}<a name="line.144"></a>
+<span class="sourceLineNo">145</span>class ListButton implements View.OnClickListener {<a name="line.145"></a>
+<span class="sourceLineNo">146</span>        public void onClick(View v) {<a name="line.146"></a>
+<span class="sourceLineNo">147</span>                ActivityMain.getScreenStateManager().newScreen(<a name="line.147"></a>
+<span class="sourceLineNo">148</span>                        ScreenStateManager.getScreenState(),<a name="line.148"></a>
+<span class="sourceLineNo">149</span>                        ScreenStateManager.ScreenState.LIST);<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        }<a name="line.150"></a>
+<span class="sourceLineNo">151</span>}<a name="line.151"></a>
+<span class="sourceLineNo">152</span><a name="line.152"></a>
+<span class="sourceLineNo">153</span>class OnCheckedChangedListenerRadioGroup implements RadioGroup.OnCheckedChangeListener {<a name="line.153"></a>
+<span class="sourceLineNo">154</span>        @Override<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        public void onCheckedChanged(RadioGroup group, int checkedId) {<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                radioButtonRid = checkedId;<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        }<a name="line.157"></a>
+<span class="sourceLineNo">158</span>}<a name="line.158"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

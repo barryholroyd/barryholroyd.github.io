@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.utils;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import com.barryholroyd.evermore.Configure;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import com.barryholroyd.evermore.debugging.printstates.FragmentPrintStates;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import com.barryholroyd.evermore.mapitems.mi_subclass.MiSubclass;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import java.util.HashMap;<a name="line.16"></a>
+<span class="sourceLineNo">017</span><a name="line.17"></a>
+<span class="sourceLineNo">018</span>//&lt;editor-fold desc="BLOCK COMMENT"&gt;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>/*<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * This is a basic StorageBank that retains simple values across<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *   Activity instantiations by storing them in static variables.<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * An earlier version, checked into Git, is fragment-based and<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *   can handle complex objects, but at this point that introduces<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *   unnecessary complexity and so I replaced it with this much<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *   simpler version.<a name="line.25"></a>
+<span class="sourceLineNo">026</span> */<a name="line.26"></a>
+<span class="sourceLineNo">027</span>//&lt;/editor-fold&gt;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>public class StorageBank extends FragmentPrintStates<a name="line.28"></a>
+<span class="sourceLineNo">029</span>{<a name="line.29"></a>
+<span class="sourceLineNo">030</span>        //&lt;editor-fold desc="FIELDS"&gt;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>        // This class stores instances of the following fields.<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>        static private boolean displayRadius = Configure.DEFAULT_DISPLAY_RADIUS;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>        static private int mocklocSpinnerPosition      = 0;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>        static private final HashMap&lt;MiSubclass,Boolean&gt; leds = new HashMap&lt;&gt;(); // true = "on"<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>        //&lt;/editor-fold&gt;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>        //&lt;editor-fold desc="GETTERS AND SETTERS"&gt;<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>        static public boolean getDisplayRadius() { return displayRadius; }<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        static public void setDisplayRadius(boolean b) { displayRadius = b; }<a name="line.41"></a>
+<span class="sourceLineNo">042</span>        static public void setLed(MiSubclass miSubclass, boolean b) { leds.put(miSubclass,b); }<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        static public boolean getLed(MiSubclass miSubclass) {<a name="line.43"></a>
+<span class="sourceLineNo">044</span>                if (!leds.containsKey(miSubclass))<a name="line.44"></a>
+<span class="sourceLineNo">045</span>                        leds.put(miSubclass, false); // leds are initially off<a name="line.45"></a>
+<span class="sourceLineNo">046</span>                return leds.get(miSubclass);<a name="line.46"></a>
+<span class="sourceLineNo">047</span>        }<a name="line.47"></a>
+<span class="sourceLineNo">048</span>        public static int getMocklocSpinnerPosition() { return mocklocSpinnerPosition; }<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        public static void setMocklocSpinnerPosition(int mocklocSpinnerPosition) {<a name="line.49"></a>
+<span class="sourceLineNo">050</span>                StorageBank.mocklocSpinnerPosition = mocklocSpinnerPosition;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        }<a name="line.51"></a>
+<span class="sourceLineNo">052</span>//&lt;/editor-fold&gt;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>}<a name="line.53"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

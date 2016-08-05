@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.debugging.logger;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import android.annotation.TargetApi;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import android.os.Build;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import android.util.Log;<a name="line.15"></a>
+<span class="sourceLineNo">016</span><a name="line.16"></a>
+<span class="sourceLineNo">017</span>import com.barryholroyd.evermore.debugging.controlpanel.CpConfigure.*;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import com.barryholroyd.evermore.debugging.controlpanel.Tracer;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import com.barryholroyd.evermore.dialogs.MyAlertDialogFragment;<a name="line.19"></a>
+<span class="sourceLineNo">020</span><a name="line.20"></a>
+<span class="sourceLineNo">021</span>public class BhLogger<a name="line.21"></a>
+<span class="sourceLineNo">022</span>{<a name="line.22"></a>
+<span class="sourceLineNo">023</span>        static final public String LOGEM = "LOGEM";<a name="line.23"></a>
+<span class="sourceLineNo">024</span>        private String logtag = LOGEM; // per-instance, can be overwritten<a name="line.24"></a>
+<span class="sourceLineNo">025</span>        static private int logtagMaxLen = LOGEM.length(); // print all logtag instances with this length<a name="line.25"></a>
+<span class="sourceLineNo">026</span>        private boolean deviceStart = true;             // reset max length after each device rotation<a name="line.26"></a>
+<span class="sourceLineNo">027</span><a name="line.27"></a>
+<span class="sourceLineNo">028</span>        // singleton<a name="line.28"></a>
+<span class="sourceLineNo">029</span>        static private BhLogger bh       = null; // debug<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>        public BhLogger() {}<a name="line.31"></a>
+<span class="sourceLineNo">032</span>        @SuppressWarnings("unused")<a name="line.32"></a>
+<span class="sourceLineNo">033</span>        public BhLogger(String modTag) {<a name="line.33"></a>
+<span class="sourceLineNo">034</span>                extendLogtag(modTag);<a name="line.34"></a>
+<span class="sourceLineNo">035</span>        }<a name="line.35"></a>
+<span class="sourceLineNo">036</span>        private static void bh() {<a name="line.36"></a>
+<span class="sourceLineNo">037</span>                if (bh == null)<a name="line.37"></a>
+<span class="sourceLineNo">038</span>                        bh = new BhLogger();<a name="line.38"></a>
+<span class="sourceLineNo">039</span>        }<a name="line.39"></a>
+<span class="sourceLineNo">040</span>        static public BhLogger bhrel() { bh();<a name="line.40"></a>
+<span class="sourceLineNo">041</span>                return bh; }<a name="line.41"></a>
+<span class="sourceLineNo">042</span>        public void extendLogtag(String modTag) {<a name="line.42"></a>
+<span class="sourceLineNo">043</span>                if (deviceStart) {      // if device has been started or rotated...<a name="line.43"></a>
+<span class="sourceLineNo">044</span>                        deviceStart = false;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>                        logtagMaxLen = logtag.length(); // reset max length<a name="line.45"></a>
+<span class="sourceLineNo">046</span>                }<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                logtag = logtag + '.' + modTag;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                logtagMaxLen = Math.max(logtag.length(), logtagMaxLen);<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        }<a name="line.49"></a>
+<span class="sourceLineNo">050</span>        public void log (String msg) {<a name="line.50"></a>
+<span class="sourceLineNo">051</span>                String format = String.format("%%-%ds", logtagMaxLen+1);<a name="line.51"></a>
+<span class="sourceLineNo">052</span>                String s = String.format(format, logtag);<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>                if (Tracer.isFlagSet(CpControl.THREADS))<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                        msg = String.format("[thread=%#x] %s", Thread.currentThread().getId(), msg);<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                Log.d(s, msg);<a name="line.56"></a>
+<span class="sourceLineNo">057</span>        }<a name="line.57"></a>
+<span class="sourceLineNo">058</span>        @SuppressWarnings("RedundantStringFormatCall")<a name="line.58"></a>
+<span class="sourceLineNo">059</span>        public void log(String format, Object...o) {<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                /*<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                 * log() method which takes up to six variable arguments<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                 * (including the initial "format" argument. Syntax is<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                 * similar to String.format(), but without type checking.<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                 * It does throw an exception if there aren't enough<a name="line.64"></a>
+<span class="sourceLineNo">065</span>                 * arguments for the format string.<a name="line.65"></a>
+<span class="sourceLineNo">066</span>                 */<a name="line.66"></a>
+<span class="sourceLineNo">067</span>                String s;<a name="line.67"></a>
+<span class="sourceLineNo">068</span>                int len = o.length;<a name="line.68"></a>
+<span class="sourceLineNo">069</span>                switch (len) {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                        case 0: s = String.format(format); break;<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                        case 1: s = String.format(format, o[0]); break;<a name="line.71"></a>
+<span class="sourceLineNo">072</span>                        case 2: s = String.format(format, o[0], o[1]); break;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                        case 3: s = String.format(format, o[0], o[1], o[2]); break;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                        case 4: s = String.format(format, o[0], o[1], o[2], o[3]); break;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>                        case 5: s = String.format(format, o[0], o[1], o[2], o[3], o[4]); break;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                        case 6: s = String.format(format, o[0], o[1], o[2], o[3], o[4], o[5]); break;<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                        default:<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                                throw new IllegalArgumentException(<a name="line.78"></a>
+<span class="sourceLineNo">079</span>                                String.format("Too many arguments to BhLogger.log(). Cnt=%d", len));<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                }<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                log(s);<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        }<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        @SuppressWarnings("unused")<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        public void logln(String msg) { log(msg + '\n'); }<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        @SuppressWarnings("unused")<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        public void logln(String format, Object...o) { log(format + '\n', o); }<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        public void exception(Throwable e) {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                String ename = e.getClass().getName();<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                String emsg = e.getMessage();<a name="line.89"></a>
+<span class="sourceLineNo">090</span>                String cmsg = "&lt;null&gt;";<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                Throwable c = e.getCause();<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                if (c != null)<a name="line.92"></a>
+<span class="sourceLineNo">093</span>                        cmsg = c.getMessage();<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>                String nstr = String.format("Exception: %s", ename);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>                String mstr = String.format("Message: %s", emsg);<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                String cstr = String.format("Cause: %s", cmsg);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                String sstr = getSuppressed(e);<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                String stck = getStack(e);<a name="line.99"></a>
+<span class="sourceLineNo">100</span><a name="line.100"></a>
+<span class="sourceLineNo">101</span>                log(nstr);<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                log(mstr);<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                log(cstr);<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                log(sstr);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                log(stck);<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>                String msg = nstr + "\n" + mstr + "\n" + cstr + "\n" + sstr + "\n" + stck;<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                MyAlertDialogFragment.showMe("Internal Error", msg, null, null, "OK");<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        @SuppressWarnings("unused")<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        public void popup(String msg) {<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                MyAlertDialogFragment.showMe(null, msg, null, null, "OK");<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        }<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        @TargetApi(19)<a name="line.114"></a>
+<span class="sourceLineNo">115</span>        private String getSuppressed(Throwable e) {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                String s = "";<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) {<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                        Throwable[] suppressed = e.getSuppressed(); // requires API level 19<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                        for (Throwable t : suppressed) {<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                                s += "\nSuppressed: " + t.getMessage();<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                        }<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                        if (s.equals(""))<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                                s = "Suppressed: &lt;none&gt;";<a name="line.123"></a>
+<span class="sourceLineNo">124</span>                }<a name="line.124"></a>
+<span class="sourceLineNo">125</span>                else<a name="line.125"></a>
+<span class="sourceLineNo">126</span>                        s = "Suppressed: &lt;not supported in this version of Android&gt;";<a name="line.126"></a>
+<span class="sourceLineNo">127</span><a name="line.127"></a>
+<span class="sourceLineNo">128</span>                return s;<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        }<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        private String getStack(Throwable e) {<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                StackTraceElement[] st = e.getStackTrace();<a name="line.131"></a>
+<span class="sourceLineNo">132</span><a name="line.132"></a>
+<span class="sourceLineNo">133</span>                String stck = "Stack Trace:";<a name="line.133"></a>
+<span class="sourceLineNo">134</span>                for (StackTraceElement ste : st) {<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                        stck += String.format("\n  %s[%d] : %s-&gt;%s()",<a name="line.135"></a>
+<span class="sourceLineNo">136</span>                                ste.getFileName(),<a name="line.136"></a>
+<span class="sourceLineNo">137</span>                                ste.getLineNumber(),<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                                ste.getClassName(),<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                                ste.getMethodName());<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                }<a name="line.140"></a>
+<span class="sourceLineNo">141</span>                return stck;<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        }<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        //&lt;editor-fold desc="BACKGROUND SUPPORT"&gt;<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        //&lt;/editor-fold&gt;<a name="line.144"></a>
+<span class="sourceLineNo">145</span>}<a name="line.145"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
