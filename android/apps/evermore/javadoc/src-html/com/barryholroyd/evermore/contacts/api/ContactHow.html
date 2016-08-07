@@ -8,34 +8,34 @@
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.contacts.api;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
-<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
-<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
-<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
-<span class="sourceLineNo">011</span> */<a name="line.11"></a>
-<span class="sourceLineNo">012</span><a name="line.12"></a>
-<span class="sourceLineNo">013</span>import com.barryholroyd.evermore.contacts.ContactsHs;<a name="line.13"></a>
-<span class="sourceLineNo">014</span>import com.barryholroyd.evermore.location.EmLatLng;<a name="line.14"></a>
-<span class="sourceLineNo">015</span>import com.barryholroyd.evermore.location.LatLngStatus;<a name="line.15"></a>
-<span class="sourceLineNo">016</span>import com.barryholroyd.evermore.contacts.Contact;<a name="line.16"></a>
-<span class="sourceLineNo">017</span>import com.barryholroyd.evermore.miscellaneous.AdrsTypeEnum;<a name="line.17"></a>
-<span class="sourceLineNo">018</span>import com.barryholroyd.evermore.types.ContactHowHs;<a name="line.18"></a>
-<span class="sourceLineNo">019</span><a name="line.19"></a>
-<span class="sourceLineNo">020</span>//&lt;editor-fold desc="ARCHITECTURE"&gt;<a name="line.20"></a>
-<span class="sourceLineNo">021</span>/*<a name="line.21"></a>
-<span class="sourceLineNo">022</span> * A given Contactg can be split into two ContactMapItems if the Contact has both a<a name="line.22"></a>
-<span class="sourceLineNo">023</span> * valid Home address and a valid Work address. The ContactHow class ("Contact Home<a name="line.23"></a>
-<span class="sourceLineNo">024</span> * Or Work") is a wrapper around the Contact class that represents either a Home version<a name="line.24"></a>
-<span class="sourceLineNo">025</span> * of the Contact or a Work version of the Contact.<a name="line.25"></a>
-<span class="sourceLineNo">026</span> *<a name="line.26"></a>
-<span class="sourceLineNo">027</span> * Both ContactDbApi and ContactHow are exposed to the rest of the system.<a name="line.27"></a>
-<span class="sourceLineNo">028</span> */<a name="line.28"></a>
-<span class="sourceLineNo">029</span>//&lt;/editor-fold&gt;<a name="line.29"></a>
-<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">003</span>import com.barryholroyd.evermore.contacts.ContactsHs;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import com.barryholroyd.evermore.location.EmLatLng;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import com.barryholroyd.evermore.location.LatLngStatus;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import com.barryholroyd.evermore.contacts.Contact;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import com.barryholroyd.evermore.miscellaneous.AdrsTypeEnum;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import com.barryholroyd.evermore.types.ContactHowHs;<a name="line.8"></a>
+<span class="sourceLineNo">009</span><a name="line.9"></a>
+<span class="sourceLineNo">010</span>/**<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * Provides a simple API for accessing per-contact information.<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * Provides a simple API for the accessing per-Contact information (postal<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * address, latitude, longitude, email and phone info, etc.) as well as some<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * important utility methods such as the ability to identify all Contacts within<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * a specific distance of a given Target.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * &lt;p&gt;<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * Since a Contact can have both a Home and a Work address, and both of those<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * can result in separate markers on the map, the ContactHW class was created as a<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * wrapper around each such address. As a result, a given single Contact in the<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * database may end up being represented to the rest of the system as both a<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * Home and a Work ContactHow. Those two items will have exactly the same<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * Contact information in them, but will be used independently for Home and Work<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * markers on the map.<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * @author Barry Holroyd<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * @em.copyright 2015 Barry Holroyd<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * &lt;br&gt;This code may not be used without the author's written permission.<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * @since 1.0<a name="line.29"></a>
+<span class="sourceLineNo">030</span> */<a name="line.30"></a>
 <span class="sourceLineNo">031</span>public class ContactHow<a name="line.31"></a>
 <span class="sourceLineNo">032</span>{<a name="line.32"></a>
 <span class="sourceLineNo">033</span>        //&lt;editor-fold desc="FIELDS"&gt;<a name="line.33"></a>
@@ -108,7 +108,7 @@
 <span class="sourceLineNo">100</span>        //&lt;/editor-fold&gt;<a name="line.100"></a>
 <span class="sourceLineNo">101</span>        //&lt;editor-fold desc="STATIC METHODS"&gt;<a name="line.101"></a>
 <span class="sourceLineNo">102</span>        @SuppressWarnings("unused")<a name="line.102"></a>
-<span class="sourceLineNo">103</span>        static public ContactHow getContactMapItem(long id, AdrsTypeEnum how) {<a name="line.103"></a>
+<span class="sourceLineNo">103</span>        static public ContactHow getContactHow(long id, AdrsTypeEnum how) {<a name="line.103"></a>
 <span class="sourceLineNo">104</span>                return new ContactHow(ContactsDbApi.getContact(id), how);<a name="line.104"></a>
 <span class="sourceLineNo">105</span>        }<a name="line.105"></a>
 <span class="sourceLineNo">106</span>        static public ContactHowHs getContactMapItemsAll() {<a name="line.106"></a>
