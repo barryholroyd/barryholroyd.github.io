@@ -1,6 +1,0 @@
-mv BluetoothChatTechDemo/images/btcd_icon_launcher.png BluetoothChatTechDemo/images/icon.png
-mv Earthquake/images/earthquake_launcher.png Earthquake/images/icon.png
-mv FragmentLifecycleToybox/images/fragment_lifecycle_toybox.png FragmentLifecycleToybox/images/icon.png
-mv FragmentStorageDemo/images/fragment_storage_demo_launcher.png FragmentStorageDemo/images/icon.png
-mv NfcReaderWriter/images/nrw_launcher.png NfcReaderWriter/images/icon.png
-mv ProductListTechDemo/images/ic_launcher.png ProductListTechDemo/images/icon.png
