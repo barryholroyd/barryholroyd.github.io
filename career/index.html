@@ -2,7 +2,7 @@
   <head>
     <title>Barry Holroyd's Career</title>
     <link rel="stylesheet" type="text/css" href="/css/base.css">
-    <link rel="stylesheet" type="text/css" href="career.css">
+    <link rel="stylesheet" type="text/css" href="/css/tables.css">
   </head>
   <body>
     <center>
@@ -97,38 +97,17 @@
 	      The implementation consists of 150 Java files with 16,000 lines
 	      of handwritten code.
 	    <p>
-	      Evermore is available in the Google Play Store. Extensive
+	      <a href="http://barryholroyd.com/evermore">Evermore Home Page</a>
+	      Evermore</a> is available in the
+	      <a href="https://play.google.com/store/apps/details?id=com.barryholroyd.evermore.free">Google Play Store</a>. Extensive
 	      documentation, including a FAQ, a full reference section and
-	      several simple tutorials, is available as <i>Help</i> from
-	      the app or directly from the web site. Source code and detailed
-	      documentation regarding its architecture is also available.
+	      several simple tutorials, is available as
+	      <a href="http://barryholroyd.com/evermore/help.html">Evermore Help</a>Help</a>
+	      from the app or directly from the web site. Source code and
+	      associated Javadocs describing its internal APIs is are
+	      available upon request.
           </td>
 	</tr>
-      </table>
-
-      <table id="table2" >
-        <tr>
-          <td><a href="http://barryholroyd.com/evermore">Evermore Home Page</a></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><a href="http://barryholroyd.com/evermore/help.html">Evermore Help</a></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><a href="https://play.google.com/store/apps/details?id=com.barryholroyd.evermore.free">
-	      Evermore Download (Google Play Store)</a></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><a href="https://github.com/barryholroyd/Evermore">Evermore Source Code</a></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><a href="http://barryholroyd.github.io/android/apps/evermore/javadoc">Evermore APIs</a></td>
-	  
-          <td></td>
-        </tr>
       </table>
 
       <table id="table1">
@@ -139,20 +118,22 @@
 	      demonstration of a high performance "list" implementation. I
 	      recommend this code base to anyone who would like to get a feel
 	      for the quality of code that I write in a professional
-	      capacity. In addition to being well designed and well
-	      documented, it provides the following performance-related
-	      features.
+	      capacity. The following performance-related features are
+	      included.
 		<ol>
-		  <li> Images downloaded in the background. Two
-		       implementations are provided: AsyncTask-based and
-		       threads-based.
-		  <li> Initial image url retained as a field and compared to
-		       the (potentially updated) URL of the ViewHolder upon
-		       image arrival.
+		  <li> Images downloaded in the background.
 		  <li> Configurable look-ahead pre-loading.
 		  <li> Configurable memory cache.
 		  <li> Configurable disk cache.
 		</ol>
+	      See
+	      <a href="https://github.com/barryholroyd/ProdlistHpDemo/wiki/Features">Feature Set</a>
+	      for details, including the full list of configurable options.
+	      <p>
+	      Two implementations are provided: AsyncTask-based and
+	      threads-based.  In all cases, care is taken to ensure the
+	      downloaded image is still the correct one at time of download.
+	      <p>
 	      There are numerous cache configuration settings available so
 	      that you can see the effects of the caches in use.
 	      <p>
@@ -161,26 +142,53 @@
 	      Walmart Open API along with a separate screen to display
 	      individual products). Relatively little attention was paid
 	      to the user interface.
+	      <p>
+	      ProdlistHpDemo can be
+              <a href="https://github.com/barryholroyd/ProdlistHpDemo/blob/master/apks/app-release.apk?raw=true">downloaded</a> for free.
+              <a href="https://github.com/barryholroyd/ProdlistHpDemo">Source code</a> and
+          <a href="http://barryholroyd.github.io/android/apps/prodlisthpdemo/javadoc/">Javadoc APIs</a> are also available.
           </td>
 	</tr>
       </table>
-      <table id="table2" >
+
+      <table id="table1">
         <tr>
-          <td><a href="https://github.com/barryholroyd/ProdlistHpDemo/blob/master/apks/app-release.apk?raw=true">ProdlistHpDemo Download</a></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><a href="https://github.com/barryholroyd/ProdlistHpDemo/wiki/Features">ProdlistHpDemo Feature Set</a></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><a href="https://github.com/barryholroyd/ProdlistHpDemo">ProdlistHpDemo Source Code</a></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><a href="http://barryholroyd.github.io/android/apps/prodlisthpdemo/javadoc/">ProdlistHpDemo APIs</a></td>
-          <td></td>
-        </tr>
+	  <td>
+	      <h3>Bluetooth Chat Demo</a></h3>
+	      Bluetooth Chat Demo is a technical demonstration of a
+	      Bluetooth 3.0 implementation of a basic chat service.
+	      <p>
+	      The app should be run on two separate devices. When started, it
+	      will display two lists: one for discovered devices and one for
+	      paired devices. Clicking on an entry in either list will cause
+	      the app to attempt to connect to that remote device. If the
+	      remote device is running this app, the connection will succeed
+	      and both devices will then display the chat UI and text can be
+	      sent and received. Clicking on "Done" on either device will
+	      terminate the session and both devices will return to the
+	      original screen.  
+	      <p>
+	      This is a technical demo of Bluetooth and is not intended to
+	      have sufficient functionality for real world use. However, it
+	      is an fairly complete implementation of Bluetooth, allowing
+	      optional Bluetooth discovery, Bluetooth pairing, basic
+	      connect/disconnect and thorough management of numerous edge
+	      cases and error conditions. It also includes a very robust
+	      implementation of tracking and managing Activity instances,
+	      which it leverages to manage communications from background
+	      threads to the foreground main/UI thread.
+	      <p>
+
+	      BluetoothChatDemo can be
+
+	      TBD
+              <a href="https://github.com/barryholroyd/ProdlistHpDemo/blob/master/apks/app-release.apk?raw=true">downloaded</a> for free.
+
+              <a href="https://github.com/barryholroyd/BluetoothDemo">Source code</a> and
+          <a href="http://barryholroyd.github.io/android/apps/bluetoothdemo/javadoc/">Javadoc APIs</a> are also available.
+
+          </td>
+	</tr>
       </table>
 
       <table id="table1">
@@ -210,3 +218,4 @@
     </center>
   </body>
 </html>
+
