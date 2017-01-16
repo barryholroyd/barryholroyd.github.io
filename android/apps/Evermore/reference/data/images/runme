@@ -1,0 +1,4 @@
+mv popup-2.png popup-A.png
+mv popup-1.png popup-2.png
+mv popup-3.png popup-1.png
+mv popup-A.png popup-3.png

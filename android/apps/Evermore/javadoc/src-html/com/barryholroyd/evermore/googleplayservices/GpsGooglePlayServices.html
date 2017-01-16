@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.googleplayservices;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import android.content.IntentSender;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import android.os.Bundle;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import android.support.annotation.NonNull;<a name="line.15"></a>
+<span class="sourceLineNo">016</span><a name="line.16"></a>
+<span class="sourceLineNo">017</span>import com.barryholroyd.evermore.ActivityMain;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import com.barryholroyd.evermore.debugging.controlpanel.Tracer;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import com.barryholroyd.evermore.debugging.controlpanel.CpConfigure.*;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import com.barryholroyd.evermore.dialogs.MyAlertDialogFragment;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import com.barryholroyd.evermore.location.ManageLocationUpdates;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import com.barryholroyd.evermore.location.Quality;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import com.google.android.gms.common.ConnectionResult;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import com.google.android.gms.common.api.GoogleApiClient;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import static com.google.android.gms.common.api.GoogleApiClient.*;<a name="line.25"></a>
+<span class="sourceLineNo">026</span><a name="line.26"></a>
+<span class="sourceLineNo">027</span>import com.google.android.gms.location.LocationAvailability;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import com.google.android.gms.location.LocationServices;<a name="line.28"></a>
+<span class="sourceLineNo">029</span><a name="line.29"></a>
+<span class="sourceLineNo">030</span>//&lt;editor-fold desc="BLOCK COMMENTS"&gt;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>/*<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * See:<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *   o https://developers.google.com/android/guides/api-client<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *   o https://developers.google.com/android/guides/api-client<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *     #handle_connection_failures<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *<a name="line.36"></a>
+<span class="sourceLineNo">037</span> *   o https://developers.google.com/android/reference/com/google/<a name="line.37"></a>
+<span class="sourceLineNo">038</span> *     android/gms/common/api/GoogleApiClient<a name="line.38"></a>
+<span class="sourceLineNo">039</span> *<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *   o https://developers.google.com/android/reference/com/google<a name="line.40"></a>
+<span class="sourceLineNo">041</span> *     /android/gms/location/FusedLocationProviderApi<a name="line.41"></a>
+<span class="sourceLineNo">042</span> *<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * Guidance:<a name="line.43"></a>
+<span class="sourceLineNo">044</span> *   o Create an instance of this in Activity's onCreate()<a name="line.44"></a>
+<span class="sourceLineNo">045</span> *   o Call connect() from the Activity's onStart() and<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *     disconnect() from the Activity's onStop().<a name="line.46"></a>
+<span class="sourceLineNo">047</span> */<a name="line.47"></a>
+<span class="sourceLineNo">048</span>//&lt;/editor-fold&gt;<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>public class GpsGooglePlayServices<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        implements ConnectionCallbacks, OnConnectionFailedListener<a name="line.51"></a>
+<span class="sourceLineNo">052</span>{<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        //&lt;editor-fold desc="FIELDS"&gt;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>        // static so that the static method getGoogleApiClient() can access it.<a name="line.54"></a>
+<span class="sourceLineNo">055</span>        static private GoogleApiClient mGoogleApiClient = null;<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>        // Request code to use when launching the resolution activity.<a name="line.57"></a>
+<span class="sourceLineNo">058</span>        static public final int REQUEST_CODE_RESOLVE_CONNECTION_ERROR = 1001;<a name="line.58"></a>
+<span class="sourceLineNo">059</span><a name="line.59"></a>
+<span class="sourceLineNo">060</span>        /*<a name="line.60"></a>
+<span class="sourceLineNo">061</span>         * Boolean to track whether the app is already resolving an error.<a name="line.61"></a>
+<span class="sourceLineNo">062</span>         * Guidance is to save the state of this variable across configuration<a name="line.62"></a>
+<span class="sourceLineNo">063</span>         * changes using the Activity's onSaveInstanceState(), but that is<a name="line.63"></a>
+<span class="sourceLineNo">064</span>         * awkward to do from here so we just make it static.<a name="line.64"></a>
+<span class="sourceLineNo">065</span>         */<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        static private boolean mResolvingError = false;<a name="line.66"></a>
+<span class="sourceLineNo">067</span><a name="line.67"></a>
+<span class="sourceLineNo">068</span>        // Still connected, but service is temporarily suspended.<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        private static boolean suspended = false;<a name="line.69"></a>
+<span class="sourceLineNo">070</span><a name="line.70"></a>
+<span class="sourceLineNo">071</span>        //&lt;/editor-fold&gt;<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        //&lt;editor-fold desc="CONSTRUCTORS"&gt;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>        public GpsGooglePlayServices() {<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                mGoogleApiClient = new GoogleApiClient.Builder(ActivityMain.getActivity())<a name="line.74"></a>
+<span class="sourceLineNo">075</span>                        .addApi(LocationServices.API)<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                        .addConnectionCallbacks(this)<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                        .addOnConnectionFailedListener(this)<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                        .build();<a name="line.78"></a>
+<span class="sourceLineNo">079</span>        }<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        //&lt;/editor-fold&gt;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        //&lt;editor-fold desc="GETTERS AND SETTERS"&gt;<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        static public GoogleApiClient getGoogleApiClient() throws GoogleApiClientException {<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                if (!mGoogleApiClient.isConnected())<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                        throw new GoogleApiClientException(<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                                "GAC: not connected to Google Play Services.",<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                                GoogleApiClientException.Cause.NOT_CONNECTED);<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                if (suspended)<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                        throw new GoogleApiClientException(<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                                "GAC: connection temporarily suspended.",<a name="line.89"></a>
+<span class="sourceLineNo">090</span>                                GoogleApiClientException.Cause.TEMPORARILY_SUSPENDED);<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                return mGoogleApiClient;<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        }<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        //&lt;/editor-fold&gt;<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        //&lt;editor-fold desc="OVERRIDE CALLBACKS"&gt;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        @Override<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        public void onConnected(Bundle connectionHint) {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                // Inform the user if location information is unavailable.<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                suspended = false;<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                mResolvingError = false;<a name="line.99"></a>
+<span class="sourceLineNo">100</span>                LocationAvailability la =<a name="line.100"></a>
+<span class="sourceLineNo">101</span>                        LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                if (!la.isLocationAvailable()) {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                        MyAlertDialogFragment.showMe("Location unavailable.",<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                                "Check your location settings.", null, null, "OK");<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                        ActivityMain.warning("GAC: location service unavailable.");<a name="line.105"></a>
+<span class="sourceLineNo">106</span>                }<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                trace("GAC connected");<a name="line.107"></a>
+<span class="sourceLineNo">108</span><a name="line.108"></a>
+<span class="sourceLineNo">109</span>                // Fire up location tracking if it isn't running already.<a name="line.109"></a>
+<span class="sourceLineNo">110</span>                if (!ManageLocationUpdates.isLocationTracking())<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                        ManageLocationUpdates.locTrackingOn("GooglePlayServices.onConnected()", Quality.HIGH);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        }<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        @Override<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        public void onConnectionSuspended(int cause) {<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                /*<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                 * The connection has been interrupted.<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                 *<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                 * Guidance: Disable any GUI components that depend on Google APIs until onConnected()<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                 * is called.<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                 *<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                 * I deal with this in getGoogleApiClient().<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                 */<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                trace("GAC suspended");<a name="line.123"></a>
+<span class="sourceLineNo">124</span>                suspended = true;<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        }<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        @Override<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        public void onConnectionFailed(@NonNull ConnectionResult result) {<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                // Handle connection errors.<a name="line.128"></a>
+<span class="sourceLineNo">129</span>                if (mResolvingError) {<a name="line.129"></a>
+<span class="sourceLineNo">130</span>                        trace("GAC onConnectionFailed(): mResolvingError=false.");<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                }<a name="line.131"></a>
+<span class="sourceLineNo">132</span>                else if (result.hasResolution())<a name="line.132"></a>
+<span class="sourceLineNo">133</span>                        try {<a name="line.133"></a>
+<span class="sourceLineNo">134</span>                                // Potentially can be resolved by the user.<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                                trace("GAC onConnectionFailed() called. Attempting to resolve (1).");<a name="line.135"></a>
+<span class="sourceLineNo">136</span>                                mResolvingError = true;<a name="line.136"></a>
+<span class="sourceLineNo">137</span>                                result.startResolutionForResult(ActivityMain.getActivity(),<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                                        REQUEST_CODE_RESOLVE_CONNECTION_ERROR);<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                        }<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                        catch (IntentSender.SendIntentException e) {<a name="line.140"></a>
+<span class="sourceLineNo">141</span>                                // There was an error with the resolution intent. Try again.<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                                ActivityMain.warning(<a name="line.142"></a>
+<span class="sourceLineNo">143</span>                                        String.format(<a name="line.143"></a>
+<span class="sourceLineNo">144</span>                                                "GPS: Exception from startResolutionForResult(): %s. Retrying...",<a name="line.144"></a>
+<span class="sourceLineNo">145</span>                                                e.getMessage()));<a name="line.145"></a>
+<span class="sourceLineNo">146</span>                                connect(mResolvingError);<a name="line.146"></a>
+<span class="sourceLineNo">147</span>                        }<a name="line.147"></a>
+<span class="sourceLineNo">148</span>                else {<a name="line.148"></a>
+<span class="sourceLineNo">149</span>                        /*<a name="line.149"></a>
+<span class="sourceLineNo">150</span>                         * May require the user to download or enable Google Play Services.<a name="line.150"></a>
+<span class="sourceLineNo">151</span>                         * Assume that we won't recover from this while this instance of the<a name="line.151"></a>
+<span class="sourceLineNo">152</span>                         * app is still running.<a name="line.152"></a>
+<span class="sourceLineNo">153</span>                         */<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                        trace("GAC connection attempted failed. Attempting to resolve (2).");<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                        new GpsConnectionErrorDialog().show(this, result.getErrorCode());<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                }<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        }<a name="line.157"></a>
+<span class="sourceLineNo">158</span>        //&lt;/editor-fold&gt;<a name="line.158"></a>
+<span class="sourceLineNo">159</span>        //&lt;editor-fold desc="CONNECTION MANAGEMENT"&gt;<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        public void connect() {<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                // Called from ActivityMain's onStart(). Use the retained mResolvingError.<a name="line.161"></a>
+<span class="sourceLineNo">162</span>                connect(mResolvingError);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>        }<a name="line.163"></a>
+<span class="sourceLineNo">164</span>        public void connect(boolean resolvingError) {<a name="line.164"></a>
+<span class="sourceLineNo">165</span>                /*<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                 * It's o.k. for connect() to be called if the client is already connected().<a name="line.166"></a>
+<span class="sourceLineNo">167</span>                 * In that situation, it does nothing.<a name="line.167"></a>
+<span class="sourceLineNo">168</span>                 */<a name="line.168"></a>
+<span class="sourceLineNo">169</span>                mResolvingError = resolvingError;<a name="line.169"></a>
+<span class="sourceLineNo">170</span>                if (!mResolvingError) {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                        trace("GAC connection request initiated...");<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                        mGoogleApiClient.connect();<a name="line.172"></a>
+<span class="sourceLineNo">173</span>                }<a name="line.173"></a>
+<span class="sourceLineNo">174</span>                else<a name="line.174"></a>
+<span class="sourceLineNo">175</span>                        trace("GAC connection request ignored (resolving error).");<a name="line.175"></a>
+<span class="sourceLineNo">176</span>        }<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        public void disconnect() {<a name="line.177"></a>
+<span class="sourceLineNo">178</span>                trace("GAC disconnecting...");<a name="line.178"></a>
+<span class="sourceLineNo">179</span>                mGoogleApiClient.disconnect();<a name="line.179"></a>
+<span class="sourceLineNo">180</span>        }<a name="line.180"></a>
+<span class="sourceLineNo">181</span>        //&lt;/editor-fold&gt;<a name="line.181"></a>
+<span class="sourceLineNo">182</span>        //&lt;editor-fold desc="ERROR HANDLING"&gt;<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        public void onDialogDismissed() {<a name="line.183"></a>
+<span class="sourceLineNo">184</span>                mResolvingError = false;<a name="line.184"></a>
+<span class="sourceLineNo">185</span>        }<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        //&lt;/editor-fold&gt;<a name="line.186"></a>
+<span class="sourceLineNo">187</span>        //&lt;editor-fold desc="DEBUGGING"&gt;<a name="line.187"></a>
+<span class="sourceLineNo">188</span>        static public void trace(String msg) {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>                Tracer.log(CpControl.GOOGLEPLAYSERVICES, msg);<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        }<a name="line.190"></a>
+<span class="sourceLineNo">191</span>        //&lt;/editor-fold&gt;<a name="line.191"></a>
+<span class="sourceLineNo">192</span>}<a name="line.192"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
