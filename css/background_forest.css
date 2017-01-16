@@ -1,5 +1,7 @@
-body {
-  background-repeat: no-repeat;
-  background-image: url(/images/backgrounds/green_forest_background.jpg);
+html { 
+  background: url('../images/backgrounds/green_forest_background.jpg') no-repeat center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
 }
