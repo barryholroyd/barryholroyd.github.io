@@ -23,23 +23,26 @@
             <i>Product List Technical Demo</i> is a technical demonstration of
 	    a high performance "list" implementation.
 	    <ul>
-              <li>Images downloaded in the background. Two implementations are
-	          provided: AsyncTask-based and threads-based.
-              <li>Initial image url retained as a field and compared to the
-	          (potentially updated) URL of the ViewHolder upon image arrival.
-              <li>Configurable look-ahead pre-loading.
-              <li>Configurable memory cache.
-              <li>Configurable disk cache.
+	      <li>Two implementations are provided: AsyncTask-based and
+		  threads-based.
+              <li>All images are downloaded in the background. Configurable
+	          look-ahead pre-loading of images is used to minimize delay.
+              <li>Each initial image url is retained as a field and compared
+	          to the (potentially updated) URL of the ViewHolder upon
+		  image arrival. Images which arrive too late are dropped
+		  for the original request but cached for later use.
+              <li>A fully configurable memory cache is included.
+              <li>A fully configurable disk cache is included.
 	    </ul>
 	    <p>
-            There are numerous cache configuration settings available so that
-	    you can see the effects of the caches in use.
+            There are numerous cache configuration settings available under
+	    <i>Settings</i> so that you can see the effects of the caches in
+	    use.
 	    <p>
             As this is a technical demo its user-facing functionality is
 	    small (a simple list of products pulled from Walmart via the
-	    Walmart Open API along with a separate screen to display
-	    individual products).  Relatively little attention was paid to
-	    the user interface
+	    Walmart Open API, along with a separate screen to display
+	    individual products).
 	  </td>
         </tr>
       </table>
