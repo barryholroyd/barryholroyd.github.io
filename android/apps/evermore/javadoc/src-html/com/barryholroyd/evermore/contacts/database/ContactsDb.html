@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.contacts.database;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import android.content.ContentValues;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import android.content.Context;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import android.database.Cursor;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import android.database.sqlite.SQLiteDatabase;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import android.database.sqlite.SQLiteOpenHelper;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import android.database.sqlite.SQLiteQueryBuilder;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import android.support.annotation.Nullable;<a name="line.19"></a>
+<span class="sourceLineNo">020</span><a name="line.20"></a>
+<span class="sourceLineNo">021</span>import com.barryholroyd.evermore.contacts.Contact;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import com.barryholroyd.evermore.debugging.logger.BhLogger;<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>/**<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *  Read all of the Contacts in the user's address book and convert them into "ContactItems"<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *  in the Evermore database.<a name="line.26"></a>
+<span class="sourceLineNo">027</span> *<a name="line.27"></a>
+<span class="sourceLineNo">028</span> *  It is only accessed by other members of the contacts subsystem.<a name="line.28"></a>
+<span class="sourceLineNo">029</span> */<a name="line.29"></a>
+<span class="sourceLineNo">030</span>public class ContactsDb<a name="line.30"></a>
+<span class="sourceLineNo">031</span>{<a name="line.31"></a>
+<span class="sourceLineNo">032</span>        //&lt;editor-fold desc="FIELDS"&gt;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>        private static final BhLogger bhrel = BhLogger.bhrel();<a name="line.33"></a>
+<span class="sourceLineNo">034</span>        private static DbHelper dbHelper = null;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>        // Column Names<a name="line.36"></a>
+<span class="sourceLineNo">037</span>        static final public String KEY_CONTACT_ID             = "contact_id";<a name="line.37"></a>
+<span class="sourceLineNo">038</span>        static final public String KEY_DISPLAY_NAME           = "display_name";<a name="line.38"></a>
+<span class="sourceLineNo">039</span>        static final public String KEY_HOME_ADRS              = "home_adrs";<a name="line.39"></a>
+<span class="sourceLineNo">040</span>        static final public String KEY_HOME_LATLNG_STATUS = "home_latlng_status";<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        static final public String KEY_HOME_ADRS_LAT   = "home_adrs_lat";<a name="line.41"></a>
+<span class="sourceLineNo">042</span>        static final public String KEY_HOME_ADRS_LNG      = "home_adrs_lng";<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        static final public String KEY_WORK_ADRS              = "work_adrs";<a name="line.43"></a>
+<span class="sourceLineNo">044</span>        static final public String KEY_WORK_LATLNG_STATUS = "work_adrs_latlng_status";<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        static final public String KEY_WORK_ADRS_LAT   = "work_adrs_lat";<a name="line.45"></a>
+<span class="sourceLineNo">046</span>        static final public String KEY_WORK_ADRS_LNG      = "work_adrs_lng";<a name="line.46"></a>
+<span class="sourceLineNo">047</span>        static final public String KEY_EMAIL_HOME             = "email_home";<a name="line.47"></a>
+<span class="sourceLineNo">048</span>        static final public String KEY_EMAIL_MOBILE           = "email_mobile";<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        static final public String KEY_EMAIL_WORK             = "email_work";<a name="line.49"></a>
+<span class="sourceLineNo">050</span>        static final public String KEY_EMAIL_OTHER            = "email_other";<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        static final public String KEY_PHONE_HOME             = "phone_home";<a name="line.51"></a>
+<span class="sourceLineNo">052</span>        static final public String KEY_PHONE_MOBILE           = "phone_mobile";<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        static final public String KEY_PHONE_WORK             = "phone_work";<a name="line.53"></a>
+<span class="sourceLineNo">054</span>        //&lt;/editor-fold&gt;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>        //&lt;editor-fold desc="CONSTRUCTORS"&gt;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>        public ContactsDb(Context context) {<a name="line.56"></a>
+<span class="sourceLineNo">057</span>                if (dbHelper == null) {<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                        dbHelper = new DbHelper(context,<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                                DbHelper.DATABASE_NAME, null,<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                                DbHelper.DATABASE_VERSION);<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                }<a name="line.61"></a>
+<span class="sourceLineNo">062</span>        }<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        //&lt;/editor-fold&gt;<a name="line.63"></a>
+<span class="sourceLineNo">064</span>        //&lt;editor-fold desc="PUBLIC API"&gt;<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        /*<a name="line.65"></a>
+<span class="sourceLineNo">066</span>         * These methods are public, but only accessed within the contacts module.<a name="line.66"></a>
+<span class="sourceLineNo">067</span>         */<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        @Nullable<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        static public Cursor getContactsFiltered(String where) {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                SQLiteDatabase db       = dbHelper.getReadableDatabase();<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                SQLiteQueryBuilder qb   = new SQLiteQueryBuilder();<a name="line.71"></a>
+<span class="sourceLineNo">072</span><a name="line.72"></a>
+<span class="sourceLineNo">073</span>                qb.setTables(DbHelper.CONTACT_ITEMS_TABLE);<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                String[] selection = {<a name="line.74"></a>
+<span class="sourceLineNo">075</span>                        KEY_CONTACT_ID,         // Unique id from the Contacts ContentProvider.<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                        KEY_DISPLAY_NAME,<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                        KEY_HOME_ADRS,<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                        KEY_HOME_LATLNG_STATUS,<a name="line.78"></a>
+<span class="sourceLineNo">079</span>                        KEY_HOME_ADRS_LAT,<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                        KEY_HOME_ADRS_LNG,<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                        KEY_WORK_ADRS,<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                        KEY_WORK_LATLNG_STATUS,<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                        KEY_WORK_ADRS_LAT,<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                        KEY_WORK_ADRS_LNG,<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                        KEY_EMAIL_HOME,<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                        KEY_EMAIL_MOBILE,<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                        KEY_EMAIL_WORK,<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                        KEY_EMAIL_OTHER,<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                        KEY_PHONE_HOME,<a name="line.89"></a>
+<span class="sourceLineNo">090</span>                        KEY_PHONE_MOBILE,<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                        KEY_PHONE_WORK<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                };<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>                String order_by = String.format("%s %s", KEY_CONTACT_ID, "ASC");<a name="line.94"></a>
+<span class="sourceLineNo">095</span>                String where_args[] = null;<a name="line.95"></a>
+<span class="sourceLineNo">096</span>                String group_by = null;<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                String having = null;<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>                Cursor c;<a name="line.99"></a>
+<span class="sourceLineNo">100</span>                try {<a name="line.100"></a>
+<span class="sourceLineNo">101</span>                        //noinspection ConstantConditions<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                        c = qb.query(db, selection, where, where_args, group_by, having, order_by);<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                } catch (Exception e) {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                        bhrel.exception(e);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                        throw e;<a name="line.105"></a>
+<span class="sourceLineNo">106</span>                }<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                return c;<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        }<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        static public int getContactsAllCount() {<a name="line.109"></a>
+<span class="sourceLineNo">110</span>                // Return a count of the total number of contacts in the database.<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                SQLiteDatabase db       = dbHelper.getReadableDatabase();<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                String select = String.format("SELECT COUNT(*) FROM %s", DbHelper.CONTACT_ITEMS_TABLE);<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                Cursor c = db. rawQuery(select, null);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                c.moveToFirst();<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                int cnt = c.getInt(0);<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                c.close();<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                return cnt;<a name="line.117"></a>
+<span class="sourceLineNo">118</span>        }<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        public void insertRecord(Contact contact) {<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                Contact.trace("INS", contact);<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                ContentValues values = fillContentValues(contact);<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                SQLiteDatabase db = dbHelper.getWritableDatabase();<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                db.insert(DbHelper.CONTACT_ITEMS_TABLE, null, values);<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        }<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        public void updateRecord(Contact contact){<a name="line.125"></a>
+<span class="sourceLineNo">126</span>                Contact.trace("UPD", contact);<a name="line.126"></a>
+<span class="sourceLineNo">127</span>                SQLiteDatabase db = dbHelper.getWritableDatabase();<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                ContentValues values = fillContentValues(contact);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>                String where = KEY_CONTACT_ID + "=" + contact.getId();<a name="line.129"></a>
+<span class="sourceLineNo">130</span>                db.update(DbHelper.CONTACT_ITEMS_TABLE, values, where, null);<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        }<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        public void deleteRecord(Contact contact) {<a name="line.132"></a>
+<span class="sourceLineNo">133</span>                Contact.trace("DEL", contact);<a name="line.133"></a>
+<span class="sourceLineNo">134</span>                String where = KEY_CONTACT_ID + "=" + contact.getId();<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                deleteRecords(where);<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        }<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        public void clearRecords() {<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                Contact.trace("DEL", "Deleting all contacts from the database.");<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                deleteRecords("");<a name="line.139"></a>
+<span class="sourceLineNo">140</span>        }<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        private void deleteRecords(String where) {<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                SQLiteDatabase db = dbHelper.getWritableDatabase();<a name="line.142"></a>
+<span class="sourceLineNo">143</span>                db.delete(DbHelper.CONTACT_ITEMS_TABLE, where, null);<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        }<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        //&lt;/editor-fold<a name="line.145"></a>
+<span class="sourceLineNo">146</span>        //&lt;editor-fold desc="PRIVATE METHODS"/&gt;<a name="line.146"></a>
+<span class="sourceLineNo">147</span>        private static class DbHelper extends SQLiteOpenHelper  {<a name="line.147"></a>
+<span class="sourceLineNo">148</span>                /*<a name="line.148"></a>
+<span class="sourceLineNo">149</span>                 * SQLiteOpenHelper implements getReadableDatabase() and getWritableDatabase().<a name="line.149"></a>
+<span class="sourceLineNo">150</span>                 * When either of those ic called, it will instantiate the database if it<a name="line.150"></a>
+<span class="sourceLineNo">151</span>                 * doesn't already exist. It will also call onCreate() so that the overridden<a name="line.151"></a>
+<span class="sourceLineNo">152</span>                 * version of that (below) can add the necessary table(s). onUpgrade() is also<a name="line.152"></a>
+<span class="sourceLineNo">153</span>                 * called, if/as appropriate.<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                 */<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                private static final String DATABASE_NAME = "evermore.db";<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                private static final String CONTACT_ITEMS_TABLE = "contact_items";<a name="line.156"></a>
+<span class="sourceLineNo">157</span>                private static final int DATABASE_VERSION = 7;<a name="line.157"></a>
+<span class="sourceLineNo">158</span><a name="line.158"></a>
+<span class="sourceLineNo">159</span>                private static final String CREATE_CONTACT_ITEMS_TABLE =<a name="line.159"></a>
+<span class="sourceLineNo">160</span>                        "CREATE TABLE " + CONTACT_ITEMS_TABLE + " ("<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                                + KEY_CONTACT_ID                 + " INTEGER PRIMARY KEY, "  // contacts primary key<a name="line.161"></a>
+<span class="sourceLineNo">162</span>                                + KEY_DISPLAY_NAME               + " TEXT, "<a name="line.162"></a>
+<span class="sourceLineNo">163</span>                                + KEY_HOME_ADRS               + " TEXT, "<a name="line.163"></a>
+<span class="sourceLineNo">164</span>                                + KEY_HOME_LATLNG_STATUS    + " INTEGER, "<a name="line.164"></a>
+<span class="sourceLineNo">165</span>                                + KEY_HOME_ADRS_LAT           + " DOUBLE, "<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                                + KEY_HOME_ADRS_LNG           + " DOUBLE, "<a name="line.166"></a>
+<span class="sourceLineNo">167</span>                                + KEY_WORK_ADRS               + " TEXT, "<a name="line.167"></a>
+<span class="sourceLineNo">168</span>                                + KEY_WORK_LATLNG_STATUS    + " INTEGER, "<a name="line.168"></a>
+<span class="sourceLineNo">169</span>                                + KEY_WORK_ADRS_LAT           + " DOUBLE, "<a name="line.169"></a>
+<span class="sourceLineNo">170</span>                                + KEY_WORK_ADRS_LNG           + " DOUBLE, "<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                                + KEY_EMAIL_HOME                 + " TEXT,"<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                                + KEY_EMAIL_MOBILE               + " TEXT,"<a name="line.172"></a>
+<span class="sourceLineNo">173</span>                                + KEY_EMAIL_WORK                 + " TEXT,"<a name="line.173"></a>
+<span class="sourceLineNo">174</span>                                + KEY_EMAIL_OTHER                + " TEXT,"<a name="line.174"></a>
+<span class="sourceLineNo">175</span>                                + KEY_PHONE_HOME                 + " TEXT,"<a name="line.175"></a>
+<span class="sourceLineNo">176</span>                                + KEY_PHONE_MOBILE               + " TEXT,"<a name="line.176"></a>
+<span class="sourceLineNo">177</span>                                + KEY_PHONE_WORK                 + " TEXT"<a name="line.177"></a>
+<span class="sourceLineNo">178</span>                                + ");";<a name="line.178"></a>
+<span class="sourceLineNo">179</span><a name="line.179"></a>
+<span class="sourceLineNo">180</span>                private static final String DROP_TABLE_LOCATIONS =<a name="line.180"></a>
+<span class="sourceLineNo">181</span>                        "DROP TABLE " + CONTACT_ITEMS_TABLE + ";";<a name="line.181"></a>
+<span class="sourceLineNo">182</span><a name="line.182"></a>
+<span class="sourceLineNo">183</span>                public DbHelper(<a name="line.183"></a>
+<span class="sourceLineNo">184</span>                        Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {<a name="line.184"></a>
+<span class="sourceLineNo">185</span>                        super(context, name, factory, version);<a name="line.185"></a>
+<span class="sourceLineNo">186</span>                }<a name="line.186"></a>
+<span class="sourceLineNo">187</span>                @Override<a name="line.187"></a>
+<span class="sourceLineNo">188</span>                public void onCreate(SQLiteDatabase db) {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>                        createDb(db);<a name="line.189"></a>
+<span class="sourceLineNo">190</span>                }<a name="line.190"></a>
+<span class="sourceLineNo">191</span>                @Override<a name="line.191"></a>
+<span class="sourceLineNo">192</span>                public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {<a name="line.192"></a>
+<span class="sourceLineNo">193</span>                        bhrel.log("Upgrading database from %d to %d, which will destroy all data.",<a name="line.193"></a>
+<span class="sourceLineNo">194</span>                                oldVersion, newVersion);<a name="line.194"></a>
+<span class="sourceLineNo">195</span>                        deleteDb(db);<a name="line.195"></a>
+<span class="sourceLineNo">196</span>                        createDb(db);<a name="line.196"></a>
+<span class="sourceLineNo">197</span>                }<a name="line.197"></a>
+<span class="sourceLineNo">198</span>                @SuppressWarnings("unused")<a name="line.198"></a>
+<span class="sourceLineNo">199</span>                private void clearDb(SQLiteDatabase db) {<a name="line.199"></a>
+<span class="sourceLineNo">200</span>                        db.delete(CONTACT_ITEMS_TABLE, "1", null); // Clear out rows in the relevant tables.<a name="line.200"></a>
+<span class="sourceLineNo">201</span>                }<a name="line.201"></a>
+<span class="sourceLineNo">202</span>                private void createDb(SQLiteDatabase db) {<a name="line.202"></a>
+<span class="sourceLineNo">203</span>                        db.execSQL(CREATE_CONTACT_ITEMS_TABLE);    // Create the desired tables.<a name="line.203"></a>
+<span class="sourceLineNo">204</span>                }<a name="line.204"></a>
+<span class="sourceLineNo">205</span>                private void deleteDb(SQLiteDatabase db) {<a name="line.205"></a>
+<span class="sourceLineNo">206</span>                        db.execSQL(DROP_TABLE_LOCATIONS);<a name="line.206"></a>
+<span class="sourceLineNo">207</span>                }<a name="line.207"></a>
+<span class="sourceLineNo">208</span>        }<a name="line.208"></a>
+<span class="sourceLineNo">209</span>        private ContentValues fillContentValues(Contact contact) {<a name="line.209"></a>
+<span class="sourceLineNo">210</span>                // Create a ContentValues for use with insertRecord() and updateRecord().<a name="line.210"></a>
+<span class="sourceLineNo">211</span>                ContentValues values = new ContentValues();<a name="line.211"></a>
+<span class="sourceLineNo">212</span>                values.put(KEY_CONTACT_ID, contact.getId());<a name="line.212"></a>
+<span class="sourceLineNo">213</span>                values.put(KEY_DISPLAY_NAME, contact.getDisplayName());<a name="line.213"></a>
+<span class="sourceLineNo">214</span><a name="line.214"></a>
+<span class="sourceLineNo">215</span>                values.put(KEY_HOME_ADRS, contact.getHomeAdrs().getAdrs());<a name="line.215"></a>
+<span class="sourceLineNo">216</span>                values.put(KEY_HOME_LATLNG_STATUS, contact.getHomeLocationStatus().toInt());<a name="line.216"></a>
+<span class="sourceLineNo">217</span>                values.put(KEY_HOME_ADRS_LAT, contact.getHomeLat());<a name="line.217"></a>
+<span class="sourceLineNo">218</span>                values.put(KEY_HOME_ADRS_LNG, contact.getHomeLng());<a name="line.218"></a>
+<span class="sourceLineNo">219</span><a name="line.219"></a>
+<span class="sourceLineNo">220</span>                values.put(KEY_WORK_ADRS, contact.getWorkAdrs().getAdrs());<a name="line.220"></a>
+<span class="sourceLineNo">221</span>                values.put(KEY_WORK_LATLNG_STATUS, contact.getWorkLocationStatus().toInt());<a name="line.221"></a>
+<span class="sourceLineNo">222</span>                values.put(KEY_WORK_ADRS_LAT, contact.getWorkLat());<a name="line.222"></a>
+<span class="sourceLineNo">223</span>                values.put(KEY_WORK_ADRS_LNG, contact.getWorkLng());<a name="line.223"></a>
+<span class="sourceLineNo">224</span><a name="line.224"></a>
+<span class="sourceLineNo">225</span>                values.put(KEY_EMAIL_HOME, contact.getEmailHome());<a name="line.225"></a>
+<span class="sourceLineNo">226</span>                values.put(KEY_EMAIL_MOBILE, contact.getEmailMobile());<a name="line.226"></a>
+<span class="sourceLineNo">227</span>                values.put(KEY_EMAIL_WORK, contact.getEmailWork());<a name="line.227"></a>
+<span class="sourceLineNo">228</span>                values.put(KEY_EMAIL_OTHER, contact.getEmailOther());<a name="line.228"></a>
+<span class="sourceLineNo">229</span>                values.put(KEY_PHONE_HOME, contact.getPhoneHome());<a name="line.229"></a>
+<span class="sourceLineNo">230</span>                values.put(KEY_PHONE_MOBILE, contact.getPhoneMobile());<a name="line.230"></a>
+<span class="sourceLineNo">231</span>                values.put(KEY_PHONE_WORK, contact.getPhoneWork());<a name="line.231"></a>
+<span class="sourceLineNo">232</span><a name="line.232"></a>
+<span class="sourceLineNo">233</span>                return values;<a name="line.233"></a>
+<span class="sourceLineNo">234</span>        }<a name="line.234"></a>
+<span class="sourceLineNo">235</span>        //&lt;/editor-fold&gt;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>}<a name="line.236"></a>
+<span class="sourceLineNo">237</span><a name="line.237"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

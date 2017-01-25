@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.mapitems.mi_subclass;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import com.barryholroyd.evermore.Configure;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import com.barryholroyd.evermore.debugging.controlpanel.CpConfigure;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import com.barryholroyd.evermore.debugging.controlpanel.Tracer;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import com.barryholroyd.evermore.location.Address;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import com.barryholroyd.evermore.location.EmLatLng;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import com.barryholroyd.evermore.location.EmPosition;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import com.barryholroyd.evermore.mapitems.mapitem.MapItem;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import com.barryholroyd.evermore.mapitems.mapitem.MapItemIcon;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import com.barryholroyd.evermore.mapitems.mapitem.MapItemRegistry;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import com.barryholroyd.evermore.mapitems.mi_class.MiClass;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import com.barryholroyd.evermore.mapping.EmMap;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import com.barryholroyd.evermore.miscellaneous.AdrsTypeEnum;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import com.barryholroyd.evermore.settings.Settings;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import com.barryholroyd.evermore.utils.Toaster;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import com.google.android.gms.maps.GoogleMap;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import com.google.android.gms.maps.model.BitmapDescriptor;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import com.google.android.gms.maps.model.LatLng;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import com.barryholroyd.evermore.mapitems.mapitem.MapItemIcon.Subclasses;<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>public class MiSubclassKeymarks extends MiSubclass<a name="line.32"></a>
+<span class="sourceLineNo">033</span>{<a name="line.33"></a>
+<span class="sourceLineNo">034</span>        /*<a name="line.34"></a>
+<span class="sourceLineNo">035</span>         * Keymarks: Unique by AdrsTypeEnum, map presence stored across app instances.<a name="line.35"></a>
+<span class="sourceLineNo">036</span>         */<a name="line.36"></a>
+<span class="sourceLineNo">037</span>        static private MiSubclassKeymarks miSubclassKeymarks = null;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>        private MiSubclassKeymarks(MiClass p) {<a name="line.39"></a>
+<span class="sourceLineNo">040</span>                super(p);<a name="line.40"></a>
+<span class="sourceLineNo">041</span>                this.rgbColor = MapItemIcon.getRgb(Subclasses.Keymarks);<a name="line.41"></a>
+<span class="sourceLineNo">042</span>                this.icon = MapItemIcon.getDrawable(Subclasses.Keymarks);<a name="line.42"></a>
+<span class="sourceLineNo">043</span>                this.bmdPrimary = MapItemIcon.getBmdSearchOrTarget(Subclasses.Keymarks);<a name="line.43"></a>
+<span class="sourceLineNo">044</span>        }<a name="line.44"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>        static public MiSubclassKeymarks create(MiClass p) {<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                if (miSubclassKeymarks == null)<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                        miSubclassKeymarks = new MiSubclassKeymarks(p);<a name="line.48"></a>
+<span class="sourceLineNo">049</span>                return miSubclassKeymarks;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>        }<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        private static MiSubclassKeymarks i() { return miSubclassKeymarks; }<a name="line.51"></a>
+<span class="sourceLineNo">052</span><a name="line.52"></a>
+<span class="sourceLineNo">053</span>        private void createMapItem(<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                String title, String snippet, double lat, double lng, AdrsTypeEnum tihow) {<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                // Get the existing MapItem, if there is one.<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                String externalId = makeExternalId(tihow);<a name="line.56"></a>
+<span class="sourceLineNo">057</span>                MapItem mapItem = MapItemRegistry.getMapItemUsingExternalId(externalId);<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                if (mapItem != null)<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                        return;<a name="line.59"></a>
+<span class="sourceLineNo">060</span><a name="line.60"></a>
+<span class="sourceLineNo">061</span>                BitmapDescriptor bmd = MapItemIcon.getBmdKeymark(tihow);<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                GoogleMap gmap = EmMap.getGmap(true);<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                LatLng ll = new LatLng(lat, lng);<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                new MapItem(gmap, this, title, snippet, ll, bmd, externalId, null);<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        }<a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>        private void makeVisible(AdrsTypeEnum adrsTypeEnum, boolean visible, boolean move_camera) {<a name="line.67"></a>
+<span class="sourceLineNo">068</span>                MapItem mapItem = MapItemRegistry.getMapItemUsingExternalId(makeExternalId(adrsTypeEnum));<a name="line.68"></a>
+<span class="sourceLineNo">069</span>                if (mapItem == null)<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                        return;<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                mapItem.displayMapItem(visible);<a name="line.71"></a>
+<span class="sourceLineNo">072</span>                if (visible &amp;&amp; move_camera) {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                        double lat = mapItem.getLat();<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                        double lng = mapItem.getLng();<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>                        if (!validLatLng(lat, lng)) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                                return;<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                        }<a name="line.78"></a>
+<span class="sourceLineNo">079</span><a name="line.79"></a>
+<span class="sourceLineNo">080</span>                        float zoom = Configure.CAMERA_ZOOM_HOME_WORK;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                        EmPosition til = new EmPosition(lat, lng, zoom);<a name="line.81"></a>
+<span class="sourceLineNo">082</span><a name="line.82"></a>
+<span class="sourceLineNo">083</span>                        /* Set the "bounce" to "true" if you want the camera to bounce back<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                         * to its original location after zooming in on this position.'<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                         */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                        boolean bounce = false;<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                        //noinspection ConstantConditions<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                        EmMap.getInstance().moveToLocation(til, true, true, bounce);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                }<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        }<a name="line.90"></a>
+<span class="sourceLineNo">091</span><a name="line.91"></a>
+<span class="sourceLineNo">092</span>        private static boolean validLatLng(double lat, double lng) {<a name="line.92"></a>
+<span class="sourceLineNo">093</span>                /*<a name="line.93"></a>
+<span class="sourceLineNo">094</span>                 * This test shouldn't be necessary. Somehow there is a bug where mapItem.getLat(),<a name="line.94"></a>
+<span class="sourceLineNo">095</span>                 * which uses a cached value for lat, returns 0.0 yet the marker has been initialized<a name="line.95"></a>
+<span class="sourceLineNo">096</span>                 * to a valid lat. That shouldn't be possible, as both are init'd in prepareMarker()<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                 * and createMarker() (called only from prepareMarker().<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                 *<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                 * The symptom is that clicking on the Home button moves the camera out to  0,0<a name="line.99"></a>
+<span class="sourceLineNo">100</span>                 * in the ocean, yet the Home marker is displayed correctly at the assigned location.<a name="line.100"></a>
+<span class="sourceLineNo">101</span>                 */<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                if ((lat == com.barryholroyd.evermore.location.EmLatLng.ILLEGAL_LATLNG) &amp;&amp; (lng == EmLatLng.ILLEGAL_LATLNG)) {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                        if (Tracer.isFlagSet(CpConfigure.CpControl.DEBUGGING))<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                                throw new IllegalStateException("Home or Work address unexpectedly has invalid latlng");<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                        else {<a name="line.105"></a>
+<span class="sourceLineNo">106</span>                                Toaster.toastShort(<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                                        "Can't move to location because latitude and longitude are not available.");<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                                return false;<a name="line.108"></a>
+<span class="sourceLineNo">109</span>                        }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>                }<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                return true;<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        }<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        static public void toggleKeymark(AdrsTypeEnum adrsTypeEnum) {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                MapItem mapItem = MapItemRegistry.getMapItemUsingExternalId(makeExternalId(adrsTypeEnum));<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                displayKeymark(adrsTypeEnum, mapItem == null, true, true);<a name="line.115"></a>
+<span class="sourceLineNo">116</span>        }<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        static public void displayKeymark(<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                AdrsTypeEnum adrsTypeEnum, boolean display, boolean move_camera, boolean display_user_msg) {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                /*<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                 * If display == true, try to display the keymark; otherwise, destroy it if it exists<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                 * (thereby clearing it from the map). If there is no valid address, then the keymark<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                 * will not be displayed even if display == true;<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                 *<a name="line.123"></a>
+<span class="sourceLineNo">124</span>                 * This method can be called for several different reasons.<a name="line.124"></a>
+<span class="sourceLineNo">125</span>                 *   1. The address was set for the first time during initialization.<a name="line.125"></a>
+<span class="sourceLineNo">126</span>                 *   2. The address was changed by the user.<a name="line.126"></a>
+<span class="sourceLineNo">127</span>                 *   3. The keymark display is toggled by the user pressing the Home or Work button.<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                 *<a name="line.128"></a>
+<span class="sourceLineNo">129</span>                 * In the case of #1, and also the case of #2 where the user intentionally<a name="line.129"></a>
+<span class="sourceLineNo">130</span>                 *   cleared the address, we don't want to display an error message for an<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                 *   invalid (e.g., empty) address, so we pass in "false" for display_user_msg.<a name="line.131"></a>
+<span class="sourceLineNo">132</span>                 */<a name="line.132"></a>
+<span class="sourceLineNo">133</span><a name="line.133"></a>
+<span class="sourceLineNo">134</span>                /*<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                 * The current mapItem, if it exists, is always destroyed. If the request is to display<a name="line.135"></a>
+<span class="sourceLineNo">136</span>                 * it, we destroy it and will recreate it in case its address has changed.<a name="line.136"></a>
+<span class="sourceLineNo">137</span>                 */<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                MapItem mapItem = MapItemRegistry.getMapItemUsingExternalId(makeExternalId(adrsTypeEnum));<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                if (mapItem != null)<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                        mapItem.destroy();<a name="line.140"></a>
+<span class="sourceLineNo">141</span><a name="line.141"></a>
+<span class="sourceLineNo">142</span>                /*<a name="line.142"></a>
+<span class="sourceLineNo">143</span>                 * Delete the keymark if requested and if it is present.<a name="line.143"></a>
+<span class="sourceLineNo">144</span>                 */<a name="line.144"></a>
+<span class="sourceLineNo">145</span>                if (!display) {<a name="line.145"></a>
+<span class="sourceLineNo">146</span>                        if (mapItem != null) {<a name="line.146"></a>
+<span class="sourceLineNo">147</span>                                Toaster.toastShort(<a name="line.147"></a>
+<span class="sourceLineNo">148</span>                                        String.format("Removed the %s icon from the map.",adrsTypeEnum.getLabel()));<a name="line.148"></a>
+<span class="sourceLineNo">149</span>                        }<a name="line.149"></a>
+<span class="sourceLineNo">150</span>                        return;<a name="line.150"></a>
+<span class="sourceLineNo">151</span>                }<a name="line.151"></a>
+<span class="sourceLineNo">152</span><a name="line.152"></a>
+<span class="sourceLineNo">153</span>                /*<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                 * Create a MapItem for the keymark and add it to the map if requested and if<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                 * if has a valid address.<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                 */<a name="line.156"></a>
+<span class="sourceLineNo">157</span>                Address adrs;<a name="line.157"></a>
+<span class="sourceLineNo">158</span>                String label;<a name="line.158"></a>
+<span class="sourceLineNo">159</span>                switch (adrsTypeEnum) {<a name="line.159"></a>
+<span class="sourceLineNo">160</span>                        case HOME:<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                                adrs = Settings.getHomeAdrs();<a name="line.161"></a>
+<span class="sourceLineNo">162</span>                                label = AdrsTypeEnum.HOME.getLabel();<a name="line.162"></a>
+<span class="sourceLineNo">163</span>                                break;<a name="line.163"></a>
+<span class="sourceLineNo">164</span>                        case WORK:<a name="line.164"></a>
+<span class="sourceLineNo">165</span>                                adrs = Settings.getWorkAdrs();<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                                label = AdrsTypeEnum.WORK.getLabel();<a name="line.166"></a>
+<span class="sourceLineNo">167</span>                                break;<a name="line.167"></a>
+<span class="sourceLineNo">168</span>                        default:<a name="line.168"></a>
+<span class="sourceLineNo">169</span>                                throw new IllegalStateException(<a name="line.169"></a>
+<span class="sourceLineNo">170</span>                                        String.format("Unhandled address type: %s", adrsTypeEnum.toString()));<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                }<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                EmLatLng emll = adrs.getLatLng();<a name="line.172"></a>
+<span class="sourceLineNo">173</span>                boolean valid = emll.isValidLatLng();<a name="line.173"></a>
+<span class="sourceLineNo">174</span>                if (!valid) {<a name="line.174"></a>
+<span class="sourceLineNo">175</span>                        if (display_user_msg) {<a name="line.175"></a>
+<span class="sourceLineNo">176</span>                                String address = adrs.getAdrs();<a name="line.176"></a>
+<span class="sourceLineNo">177</span>                                String msg = (address == null)<a name="line.177"></a>
+<span class="sourceLineNo">178</span>                                        ? String.format("Please set your %s address in Settings first.", label)<a name="line.178"></a>
+<span class="sourceLineNo">179</span>                                        : String.format(<a name="line.179"></a>
+<span class="sourceLineNo">180</span>                                        "There is no geolocation available for this %s address:\n  %s", label,<a name="line.180"></a>
+<span class="sourceLineNo">181</span>                                        address);<a name="line.181"></a>
+<span class="sourceLineNo">182</span>                                Toaster.toastShort(msg);<a name="line.182"></a>
+<span class="sourceLineNo">183</span>                        }<a name="line.183"></a>
+<span class="sourceLineNo">184</span>                        return;<a name="line.184"></a>
+<span class="sourceLineNo">185</span>                }<a name="line.185"></a>
+<span class="sourceLineNo">186</span><a name="line.186"></a>
+<span class="sourceLineNo">187</span>                double lat = emll.getLat();<a name="line.187"></a>
+<span class="sourceLineNo">188</span>                double lng = emll.getLng();<a name="line.188"></a>
+<span class="sourceLineNo">189</span>                i().createMapItem(label, null, lat, lng, adrsTypeEnum);<a name="line.189"></a>
+<span class="sourceLineNo">190</span>                i().makeVisible(adrsTypeEnum, true, move_camera);<a name="line.190"></a>
+<span class="sourceLineNo">191</span>        }<a name="line.191"></a>
+<span class="sourceLineNo">192</span>        static public MapItem getMapItem(AdrsTypeEnum adrsTypeEnum) {<a name="line.192"></a>
+<span class="sourceLineNo">193</span>                return MapItemRegistry.getMapItemUsingExternalId(makeExternalId(adrsTypeEnum));<a name="line.193"></a>
+<span class="sourceLineNo">194</span>        }<a name="line.194"></a>
+<span class="sourceLineNo">195</span>        static private String makeExternalId(AdrsTypeEnum adrsTypeEnum) {<a name="line.195"></a>
+<span class="sourceLineNo">196</span>                return adrsTypeEnum.getLabel();<a name="line.196"></a>
+<span class="sourceLineNo">197</span>        }<a name="line.197"></a>
+<span class="sourceLineNo">198</span>}<a name="line.198"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

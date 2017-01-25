@@ -1,0 +1,204 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="../../../css/base.css">
+  </head>
+  <body>
+    <center>
+      <h1>FAQ</h1>
+      <h2>General</h2>
+    </center>
+    <div class=center>
+      <div style="width:500px">
+        <a href="#YelpAndGoogleMaps">
+             How is Evermore better/different than Yelp and Google Maps?</a>
+        <br><a href="#Contacts">What are Contacts?</a>
+        <br><a href="#GeocoderFails">Evermore won't recognize a valid address</a>
+        <br><a href="#Bearings">Why can't I get a bearing on the List
+     screen?</a>
+        <br><a href="#OverlappingSearches">Why do I see multiple <i>Pins</i> for a
+        <br><a href="#Futures">What new features are in the works for
+             Evermore?</a>
+      </div>
+    </div>
+    <center>
+      <h2>Yelp</h2>
+    </center>
+    <div class=center>
+      <div style="width:500px">
+        <a href="#YelpNoSearchResults">When I do a Yelp search Evermore doesn't find anything.</a>
+        <br><a href="#YelpSearchExceedsRadius">Yelp search exceeds radius</a>
+        <br><a href="#YelpPriceFilter">Can I filter Yelp searches by price?</a>
+        <br><a href="#YelpRatingsFilter">Can I filter Yelp searches by rating?</a>
+      </dev>
+    </dev>
+
+    <div class=center>
+      <div style="width:500px">
+
+        <h2 id="YelpAndGoogleMaps">How is Evermore better/different than Yelp
+	    and Google Maps?</h2>
+        Neither Yelp nor Google Maps:
+          <ol>
+            <li>allows you to do multiple types of searches.
+            <li>allows you to do multiple simultaneous searches.
+            <li>provides targets to center your searches on.
+            <li>supports searches through your address book.
+            <li>provides a list of results with color-coded arrows
+	        pointing towards each of the search results.
+          </ol>
+
+        <h2 id="Contacts">What are Contacts?</h2>
+            Contacts are addresses pulled from your device's address book and
+	    displayed on the map as home and work addresses.
+        <p>
+        Contacts get loaded the first time the app is run after
+	installation.  While this is happening, a progress bar is displayed
+	in the lower left portion of the screen. Small messages indicating
+	the start and end of the loading process will also appear briefly at
+	the bottom of the screen.
+        <p>
+        After the initial load, your Contacts will be silently refreshed each
+	time the app is started. Because this can take some time, but
+	typically results in only small changes in the list of loaded
+	Contacts, no progress bar is shown.
+        <p>
+	For a Contact to be loaded into Evermore:
+	<ol>
+	  1. It must be in your device's address book.
+	  2. It must have a valid home and/or work postal address.
+	  3. Google's geocoder server must be able to translate it
+	    to a latitude/longitude pair.
+	</ol>
+
+	<h2 id="GeocoderFails">Evermore Won't Recognize a Valid Address</h2>
+	In some cases, an address may be valid yet Evermore won't recognize
+	it. Evermore uses Google's geocoder and, for some reason, the
+	geocoder doesn't always recognize valid addresses. The workaround for
+	this is to change the address slightly -- e.g., increment the address
+	by 1. Although that is less than ideal, it is often sufficient for
+	the geocoder to recognize the address.
+
+        <h2 id="Bearings">Why can't I get a bearing on the List screen?</h2>
+        Devices can generally obtain a <a
+	href="terminology.html#Location">location</a>
+	much more easily than a
+	<a href="terminology.html#Bearing">bearing</a>. When location
+	information is obtained by the device, it always contains a latitude
+	and longitude (the location itself) and it <i>may</i> contain bearing
+	information. In order to provide bearing information, the device has
+	to determine if it is moving and, if so, in which direction. The
+	implementation of this appears to vary greatly by manufacturer. In
+	all cases, Android apps simply need to wait for the information to be
+	provided. When displaying the List screen (where location and bearing
+	are most relevant), Evermore attempts to keep you as informed as
+	possible regarding the status of both location and bearing
+	information via two mechanisms.
+        <ol>
+          <dl>
+            <dt>LEDs
+            <dd>At the top of the List screen are two leds -- one for
+	        location and one for bearing. By default, they are red,
+		indicating that no current location/bearing information is
+		available. They turn green when the information becomes
+		available.  Because bearing information is a subset of the
+		overall location information, the location LED will always
+		turn green before the bearing LED.  Because bearing
+		information can be difficult to obtain, you may find that the
+		bearing LED remains red long after the location LED has
+		turned green.
+            <dt>Dimming
+            <dd>Each row on the List screen has the distance to the
+		href="terminology.html#Pin">Pin</a>
+	        (search result) at the right end of the row, followed by an
+		arrow pointing in the physical direction of the <i>Pin</i>. When a
+		location or bearing signal is lost, the LED will immediately
+		turn red.  Evermore will continue to present the latest
+		information available (distance and direction of each <i>Pin</i>).
+		However, the distance text will slowly fade over time after
+		the location LED has turned red, to indicate that the
+		information is getting stale. Similarly, the colored arrows
+		at the end of the rows will slowly fade after the bearing LED
+		turns red.
+          </dl>
+        </ol>
+
+        <h2 id="OverlappingSearches">Why do I see multiple <i>Pins</i> for a
+	    single search result?</h2>
+        If there are multiple <i>Targets</i> on the map with overlapping
+	radii, then a search may have multiple <i>Pins</i> appear at the
+	same location -- one for each of the radii. This is by design. You
+	have the option of clearing a search -- with this approach, an
+	appropriate number of <i>Pins</i> will still be present at each
+	location.
+
+        <h2 id="Futures">What new features are in the works for Evermore?</h2>
+        Evermore is highly expandable. Because it is map-driven and
+	search-agnostic, over time more and more services and features can be
+	added.  For instance:
+        <ol>
+          <li>Long tap on the map to produce a pop-up showing the current
+	      local time at that location as well as a short weather synopsis.
+          <li>Save specific configurations of targets and searches so that
+	      you can plot out a trip and then call up that configuration later.
+        </ol>
+
+	<!-- YELP -->
+        <h2 id="YelpNoSearchResults">When I do a Yelp search Evermore doesn't
+	    find anything.</h2>
+	There are several reasons that an Evermore search may fail. In each
+	case, it should give you a reasonable explanation of why the search
+	failed, although sometimes the failure might still be perplexing.
+	Here are some common causes.
+	<ol>
+	  <li>Many Yelp searches actually do yield no results, in which case
+	      a short pop up window will tell you that nothing was found.
+	      Also, the small led for the search will be lit only if
+	      something is found.
+	  <li>Be sure that you have a <i>Target</i> on the map. Evermore will
+	      not do a search without a <i>Target</i> present.
+	  <li>Be sure that the <i>Target</i> is visible. If you are looking
+	      at a portion of the map which doesn't have any <i>Targets</i>
+	      displayed, you won't be able to see the results of the search.
+	  <li>If you have multiple <i>Targets</i> then you'll want to check
+	      each of them to see if results appeared there. The easiest way
+	      to do this is to expand the map to display all the
+	      <i>Targets</i> and re-run the search, if necessary. You may
+	      want to use the Map screen to do this (click on the Map radio
+	      button as the top of the screen) -- that gives you the most
+	      surface area for the map to be displayed.
+	</ol>
+
+        <h2 id="YelpSearchExceedsRadius">Yelp search exceeds radius</h2>
+        Yelp searches sometimes return items that are outside of the specified
+	radius. For example, you might specify a radius of two miles yet a
+	search returns something that is four or five miles away. This is
+	a quirk of Yelp -- Evermore simply displays whatever Yelp returns.
+
+        <h2 id="YelpPriceFilter">Can I filter Yelp searches by price?</h2>
+	Yelp searches (e.g., for restaurants) cannot be filtered by price
+	(the Yelp API doesn't provide that capability).
+
+        <h2 id="YelpRatingsFilter">Can I filter Yelp searches by rating?</h2>
+	When doing a Yelp search in Evermore, you can specify a rating as a
+	filter. Although the Yelp API doesn't provide that capability directly,
+	the returned results do include ratings, so if
+	you specify a rating in Evermore it will first collect all results
+	without specifying a rating, and then apply the rating filter itself and
+	return only those results with the specified rating or higher.
+	<p>This has one subtle side effect which may be unexpected. The final
+	result set might have fewer results than the maximum allowed, even
+	though there are valid results that aren't included.
+	<p>This can happen when Evermore initially collects the maximum number
+	of possible results without the ratings filter, then ends up with fewer
+	than the maximum after applying the filter. When this happens, you will
+	get a short pop up notice indicating that the maximum number was found
+	initially, but the total result set returned was smaller due to the
+	filtering.
+      </div>
+    </div>
+    <center>
+      <a href="help.html"><img class="button-margin"
+         src="images/buttons/up.png"></a>
+    </center>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.barryholroyd.evermore.debugging.controlpanel;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> ******************************<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright 2015 Barry Holroyd<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Author: Barry Holroyd<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This code may not be used without<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   the author's written permission.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * See License.txt for details.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *******************************<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import com.barryholroyd.evermore.Configure;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import com.barryholroyd.evermore.R;<a name="line.14"></a>
+<span class="sourceLineNo">015</span><a name="line.15"></a>
+<span class="sourceLineNo">016</span>/*<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * --------------------------------------------------------------------<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * To add a control, just add the appropriate line to CpControl and<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * provide the data specified in the last field, as described here:<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *      Checkbox:   boolean default value.<a name="line.21"></a>
+<span class="sourceLineNo">022</span> *      Button:     method in CpButtonImpl.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *      Spinner:    resource id for XML file containing menu items.<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *      Flag:       boolean default value.<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * The "label" field should be unique because it is used at the View's<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * tag when the View is created.<a name="line.27"></a>
+<span class="sourceLineNo">028</span> *<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * --------------------------------------------------------------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * Access to flags is done through the Tracer class. Examples:<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * --------------------------------------------------------------------<a name="line.31"></a>
+<span class="sourceLineNo">032</span> *<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *    static public void trace(String msg) {<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *          Tracer.log(CpImpl.TRACING_MAIN, msg);<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *    }<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *<a name="line.36"></a>
+<span class="sourceLineNo">037</span> *    static public void printFlagValue(String flag) {<a name="line.37"></a>
+<span class="sourceLineNo">038</span> *      BhLogger.bh().log("FLAG: %s=%b", flag, Tracer.isFlagSet(flag));<a name="line.38"></a>
+<span class="sourceLineNo">039</span> *    }<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *    printFlagValue(CpImpl.TRACING_MAIN);<a name="line.40"></a>
+<span class="sourceLineNo">041</span> *<a name="line.41"></a>
+<span class="sourceLineNo">042</span> *    static public void testFlag() {<a name="line.42"></a>
+<span class="sourceLineNo">043</span> *      if (Tracer.isFlagSet(CpImpl.TRACING_MAIN))<a name="line.43"></a>
+<span class="sourceLineNo">044</span> *        ; // do something<a name="line.44"></a>
+<span class="sourceLineNo">045</span> *     }<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * ***********************************************************************<a name="line.47"></a>
+<span class="sourceLineNo">048</span> */<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>public class CpConfigure<a name="line.50"></a>
+<span class="sourceLineNo">051</span>{<a name="line.51"></a>
+<span class="sourceLineNo">052</span>        enum CpBlock {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>                PRIMARY("Primary", 3),<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                LOCATION("Location", 3),<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                LISTSCREEN("List Screen", 3),<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                CONTACTS("Contacts", 3),<a name="line.56"></a>
+<span class="sourceLineNo">057</span>                LIFECYCLE("Lifecycle", 3),<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                GOOGLE("Google", 2),<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                YELP("Yelp", 2),<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                DEBUGGING("Threads", 1),<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                ADDRESSES("Addresses", 2),<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                TMP("Tmp", 3),<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                DUMP_STATE("Dump State", 3),<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                ;<a name="line.64"></a>
+<span class="sourceLineNo">065</span>                final int cols;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>                final String name;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>                @SuppressWarnings("unused")<a name="line.67"></a>
+<span class="sourceLineNo">068</span>                CpBlock(String _name, int _cols) {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>                        cols = _cols;<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                        name = _name;<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                }<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        }<a name="line.72"></a>
+<span class="sourceLineNo">073</span><a name="line.73"></a>
+<span class="sourceLineNo">074</span>        @SuppressWarnings("unused")<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        enum CpType {<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                BUTTON,<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                CHECKBOX,<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                SPINNER,<a name="line.78"></a>
+<span class="sourceLineNo">079</span>                FLAG        // Just create a Tracer flag, don't create any View for it.<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        }<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>        public enum CpControl<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        {<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                NEW_ACTIVITY            (CpBlock.PRIMARY,   CpType.CHECKBOX, "New Activity",                Configure.DFLT_CP_NEW_ACTIVITY),<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                WARNING                 (CpBlock.PRIMARY,   CpType.CHECKBOX, "Warning",                     Configure.DFLT_CP_WARNING),<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                APP_TRANSITIONS         (CpBlock.PRIMARY,   CpType.CHECKBOX, "App Transitions",             Configure.DFLT_CP_APP_TRANSITIONS),<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>                MOCKLOCATION_FLAG           (CpBlock.LOCATION,   CpType.FLAG, null,                        Configure.DFLT_CP_MOCKLOCATION_FLAG),<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                DISABLE_LOCAVAIL_FLAG       (CpBlock.LOCATION, CpType.FLAG, null,                        Configure.DFLT_CP_DISABLE_LOCAVAIL_FLAG),<a name="line.89"></a>
+<span class="sourceLineNo">090</span>                DISABLE_BEARING_VALID_FLAG  (CpBlock.LOCATION, CpType.FLAG, null,                        Configure.DFLT_CP_DISABLE_BEARING_VALID_FLAG),<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                LOCATION_TRACKING           (CpBlock.LOCATION,   CpType.CHECKBOX, "Log: Loc Tracking",     Configure.DFLT_CP_LOCATION_TRACKING),<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                LOCATION_UPDATES            (CpBlock.LOCATION,   CpType.CHECKBOX, "Log: Loc Updates",      Configure.DFLT_CP_LOCATION_UPDATES),<a name="line.92"></a>
+<span class="sourceLineNo">093</span>                DBG_LOC_DETAILS             (CpBlock.LOCATION,   CpType.CHECKBOX, "Log: Loc Details",          Configure.DFLT_CP_DBG_LOC_DETAILS),<a name="line.93"></a>
+<span class="sourceLineNo">094</span>                LABEL_SPINNER_MOCKLOC       (CpBlock.LOCATION,   CpType.SPINNER,  "Spinner Mockloc",       R.array.cp_spinner_mockloc),<a name="line.94"></a>
+<span class="sourceLineNo">095</span>                FORCE_LOCATION_UNAVAILABLE  (CpBlock.LOCATION, CpType.BUTTON,   "Loc Unavail",     "toggleLocationAvailable"),<a name="line.95"></a>
+<span class="sourceLineNo">096</span>                FORCE_BEARING_INVALID       (CpBlock.LOCATION, CpType.BUTTON,   "Brng Invalid", "toggleBearingInvalid"),<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                LOCATION_DRIVING            (CpBlock.LOCATION,   CpType.CHECKBOX,   "Driving",                  Configure.DFLT_CP_DRIVING),<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                LABEL_DUMP_LOCATION_STATE        (CpBlock.LOCATION,   CpType.BUTTON,   "Dump Location State (T)",                  "dumpLocationState"),<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                LABEL_DUMP_DIRECTION_INFO        (CpBlock.LOCATION,   CpType.BUTTON,   "Dump DirectionInfo",  "dumpDirectionInfo"),<a name="line.99"></a>
+<span class="sourceLineNo">100</span><a name="line.100"></a>
+<span class="sourceLineNo">101</span>                CONTACTS_SERVICE        (CpBlock.CONTACTS,   CpType.CHECKBOX, "Contacts Service",            Configure.DFLT_CP_CONTACTS_SERVICE),<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                CONTACTS                (CpBlock.CONTACTS,   CpType.CHECKBOX, "Contacts",                    Configure.DFLT_CP_CONTACTS),<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                LABEL_CLEAR_CONTACTS    (CpBlock.CONTACTS,   CpType.BUTTON,   "Clear Contacts",              "clearContacts"),<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                LABEL_RELOAD_CONTACTS   (CpBlock.CONTACTS,   CpType.BUTTON,   "Reload Contacts",             "reloadContacts"),<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                LABEL_COUNT_CONTACTS    (CpBlock.CONTACTS,   CpType.BUTTON,   "Contacts Count",              "countContacts"),<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>                LC_ACTIVITY             (CpBlock.LIFECYCLE,   CpType.CHECKBOX, "Lifecycle Activity",          Configure.DFLT_CP_LC_ACTIVITY),<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                LC_FRAGMENT             (CpBlock.LIFECYCLE,   CpType.CHECKBOX, "Lifecycle Fragment",          Configure.DFLT_CP_LC_FRAGMENT),<a name="line.108"></a>
+<span class="sourceLineNo">109</span>                LC_DIALOG_FRAGMENT      (CpBlock.LIFECYCLE,   CpType.CHECKBOX, "Lifecycle Dialog Fragment",   Configure.DFLT_CP_LC_DIALOG_FRAGMENT),<a name="line.109"></a>
+<span class="sourceLineNo">110</span><a name="line.110"></a>
+<span class="sourceLineNo">111</span>                GOOGLEMAP               (CpBlock.GOOGLE,   CpType.CHECKBOX, "Google Map",                  Configure.DFLT_CP_GOOGLEMAP),<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                GOOGLEPLAYSERVICES      (CpBlock.GOOGLE,   CpType.CHECKBOX, "Google Play Services",        Configure.DFLT_CP_GOOGLEPLAYSERVICES),<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                ADRS_LOOKUP_FAILED      (CpBlock.GOOGLE,   CpType.CHECKBOX, "Address Lookup Failed",       Configure.DFLT_CP_ADRS_LOOKUP_FAILED),<a name="line.113"></a>
+<span class="sourceLineNo">114</span><a name="line.114"></a>
+<span class="sourceLineNo">115</span>                DIM_TRACE_ENABLE        (CpBlock.LISTSCREEN,   CpType.CHECKBOX, "Dim Trace Enable",         Configure.DFLT_CP_DIM_TRACE_ENABLE),<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                DIM_TRACE_DUMP          (CpBlock.LISTSCREEN,   CpType.BUTTON, "Dim Trace Dump",             "dimTraceDump"),<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                FORCE_DIMMING           (CpBlock.LISTSCREEN,   CpType.CHECKBOX, "Force Dimming",            Configure.DFLT_CP_FORCE_DIMMING),<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                REFRESH_LIST_SCREEN     (CpBlock.LISTSCREEN,   CpType.BUTTON, "Refresh List Screen",        "refreshListScreenCp"),<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>                LABEL_DUMP_STATE        (CpBlock.DUMP_STATE,   CpType.BUTTON,   "Dump State (T)",       "dumpState"),<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                LABEL_DUMP_APP_INFO     (CpBlock.DUMP_STATE,   CpType.BUTTON,   "Dump AppInfo (T)",     "dumpAppInfo"),<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                LABEL_VIEW_HIERARCHY    (CpBlock.DUMP_STATE,   CpType.BUTTON,   "View Hierarchy",              "viewHierarchy"),<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                LABEL_DUMP_IDS          (CpBlock.DUMP_STATE,   CpType.BUTTON,   "Dump Ids",                    "dumpIds"),<a name="line.123"></a>
+<span class="sourceLineNo">124</span><a name="line.124"></a>
+<span class="sourceLineNo">125</span>                YELP                    (CpBlock.YELP,   CpType.CHECKBOX, "Yelp",                        Configure.DFLT_CP_YELP),<a name="line.125"></a>
+<span class="sourceLineNo">126</span>                LABEL_YELP_CATEGORIES   (CpBlock.YELP,   CpType.BUTTON,   "Yelp Categories",             "viewYelpCategories"),<a name="line.126"></a>
+<span class="sourceLineNo">127</span><a name="line.127"></a>
+<span class="sourceLineNo">128</span>                TMP1                    (CpBlock.TMP,   CpType.CHECKBOX, "Tmp1",                        Configure.DFLT_CP_TMP1),<a name="line.128"></a>
+<span class="sourceLineNo">129</span>                TMP2                    (CpBlock.TMP,   CpType.CHECKBOX, "Tmp2",                        Configure.DFLT_CP_TMP2),<a name="line.129"></a>
+<span class="sourceLineNo">130</span>                TMP3                    (CpBlock.TMP,   CpType.CHECKBOX, "Tmp3",                        Configure.DFLT_CP_TMP3),<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                LABEL_SPINNER_1         (CpBlock.TMP,   CpType.SPINNER,  "Spinner 1",                   R.array.cp_spinner_1),<a name="line.131"></a>
+<span class="sourceLineNo">132</span>                LABEL_SPINNER_2         (CpBlock.TMP,   CpType.SPINNER,  "Spinner 2",                   R.array.cp_spinner_2),<a name="line.132"></a>
+<span class="sourceLineNo">133</span>                LABEL_SPINNER_3         (CpBlock.TMP,   CpType.SPINNER,  "Spinner 3",                   R.array.cp_spinner_3),<a name="line.133"></a>
+<span class="sourceLineNo">134</span>                LABEL_TEST_BUTTON_1     (CpBlock.TMP,   CpType.BUTTON,   "Test Button 1",                   "testButton1"),<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                LABEL_TEST_BUTTON_2     (CpBlock.TMP,   CpType.BUTTON,   "Test Button 2",                   "testButton2"),<a name="line.135"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span>                THREADS                 (CpBlock.DEBUGGING,   CpType.CHECKBOX, "Threads",               Configure.DEFAULT_DEBUGGING_THREADS),<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                // IMPORTANT: *** Always leave DEBUGGING default to "false" so that it doesn't ship as "true" in the release. ***<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                DEBUGGING               (CpBlock.DEBUGGING,   CpType.CHECKBOX, "Debugging",             Configure.DEFAULT_DEBUGGING_DEBUG),<a name="line.139"></a>
+<span class="sourceLineNo">140</span><a name="line.140"></a>
+<span class="sourceLineNo">141</span>                HOME                    (CpBlock.ADDRESSES, CpType.BUTTON,   "Home",                        "setHome"),<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                WORK                    (CpBlock.ADDRESSES, CpType.BUTTON,   "Work",                        "setWork"),<a name="line.142"></a>
+<span class="sourceLineNo">143</span><a name="line.143"></a>
+<span class="sourceLineNo">144</span>                ;<a name="line.144"></a>
+<span class="sourceLineNo">145</span><a name="line.145"></a>
+<span class="sourceLineNo">146</span>                final CpBlock cpBlock;<a name="line.146"></a>
+<span class="sourceLineNo">147</span>                final CpType cpType;<a name="line.147"></a>
+<span class="sourceLineNo">148</span>                final String label;<a name="line.148"></a>
+<span class="sourceLineNo">149</span>                final Object data;<a name="line.149"></a>
+<span class="sourceLineNo">150</span><a name="line.150"></a>
+<span class="sourceLineNo">151</span>                @SuppressWarnings("unused")<a name="line.151"></a>
+<span class="sourceLineNo">152</span>                CpControl(CpBlock _cpBlock, CpType _cpType, String _label, Object _data) {<a name="line.152"></a>
+<span class="sourceLineNo">153</span>                        cpBlock = _cpBlock;<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                    cpType = _cpType;<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                    label = _label;<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                    data = _data;<a name="line.156"></a>
+<span class="sourceLineNo">157</span>                }<a name="line.157"></a>
+<span class="sourceLineNo">158</span><a name="line.158"></a>
+<span class="sourceLineNo">159</span>                public String getLabel() { return label; }<a name="line.159"></a>
+<span class="sourceLineNo">160</span>                @SuppressWarnings("unused")<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                public Object getData() { return data; }<a name="line.161"></a>
+<span class="sourceLineNo">162</span>        }<a name="line.162"></a>
+<span class="sourceLineNo">163</span>}<a name="line.163"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
