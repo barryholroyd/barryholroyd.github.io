@@ -1,3 +1,4 @@
+/* TABLE 1 */
 table#table1 {
   width: 50%;    
 }
@@ -8,6 +9,7 @@ table#table1 td {
   padding: 5px;
 }
 
+/* TABLE 2 */
 table#table2 {
   width: 35%;
 }
@@ -18,6 +20,7 @@ table#table2 td {
   padding: 1px;
 }
 
+/* TABLE 3 */
 table#table3 {
   width: 50%;    
   border: 1px solid black
@@ -29,13 +32,25 @@ table#table3 td {
   padding: 1px;
 }
 
+/* TABLE 4 */
 table#table4 {
   width: 70%;    
   border: 1px solid black
 }
-table#table3 th {
+table#table4 th {
   padding: 1px;
 }
-table#table3 td {
+table#table4 td {
   padding: 1px;
+}
+
+/* TABLE 5 */
+table#table5 {
+  width: 70%;    
+}
+table#table5 th {
+  padding: 5px;
+}
+table#table5 td {
+  padding: 5px;
 }
